@@ -1,4 +1,5 @@
 ﻿using DoodleJump.Common;
+using UnityEngine;
 
 namespace DoodleJump
 {
@@ -10,8 +11,16 @@ namespace DoodleJump
         {
             base.Init();
             
-            _logger = new Logger();
+            _logger = new Common.Logger();
             _logger.Log("Game Manager Initialized");
+        }
+
+        void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            }
         }
     }
 }
