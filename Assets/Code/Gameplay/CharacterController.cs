@@ -49,7 +49,7 @@ namespace DoodleJump.Gameplay
 
             //update camera position
             var cameraPos = mainCamera.transform.position;
-            cameraPos.y = Position.y;
+            cameraPos.y = Mathf.Max(cameraPos.y, Position.y);
             mainCamera.transform.position = cameraPos;
         }
 
@@ -93,13 +93,23 @@ namespace DoodleJump.Gameplay
 
         void OnTriggerEnter2D(Collider2D otherCollider)
         {
-            if(otherCollider.gameObject.layer == LayerMask.NameToLayer("Platform"))
+            OnTrigger(otherCollider);
+        }
+
+        private void OnTrigger(Collider2D otherCollider)
+        {
+            if (otherCollider.gameObject.layer == LayerMask.NameToLayer("Platform"))
             {
-                if(_speed.y < 0)
+                if (_speed.y < 0)
                 {
                     Jump();
                 }
             }
+        }
+
+        void OnTriggerStay2D(Collider2D otherCollider)
+        {
+            OnTrigger(otherCollider);
         }
     }
 }
