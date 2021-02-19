@@ -18,6 +18,20 @@ namespace DoodleJump.Gameplay
 
         private Vector2 _speed;
 
+        private Camera _mainCamera;
+        private Camera mainCamera
+        {
+            get
+            {
+                if(!_mainCamera)
+                {
+                    _mainCamera = Camera.main;
+                }
+
+                return _mainCamera;
+            }
+        }
+
         public void InitializeForTheGame()
         {
             SetSpeed(Vector2.zero);
@@ -25,24 +39,18 @@ namespace DoodleJump.Gameplay
 
         void Update()
         {
+            //handle gravity movement
             SetSpeed(_speed + Vector2.up * accelerationY * Time.deltaTime);
             ApplyMovement();
 
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                Jump();
-            }
-
-            // if(Input.GetKey(KeyCode.RightArrow))
-            // {
-            //     MoveX(moveSpeedX * Time.deltaTime);
-            // }else if(Input.GetKey(KeyCode.LeftArrow))
-            // {
-            //     MoveX(-moveSpeedX * Time.deltaTime);
-            // }
-
+            //handle x movement
             var horizontal = Input.GetAxis("Horizontal");
             MoveX(horizontal * moveSpeedX * Time.deltaTime);
+
+            //update camera position
+            var cameraPos = mainCamera.transform.position;
+            cameraPos.y = Position.y;
+            mainCamera.transform.position = cameraPos;
         }
 
         private void MoveX(float delta)
@@ -81,6 +89,17 @@ namespace DoodleJump.Gameplay
         private void SetSpeed(Vector2 speed)
         {
             _speed = speed;
+        }
+
+        void OnTriggerEnter2D(Collider2D otherCollider)
+        {
+            if(otherCollider.gameObject.layer == LayerMask.NameToLayer("Platform"))
+            {
+                if(_speed.y < 0)
+                {
+                    Jump();
+                }
+            }
         }
     }
 }
