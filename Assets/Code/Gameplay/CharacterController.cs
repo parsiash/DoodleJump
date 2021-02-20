@@ -96,6 +96,11 @@ namespace DoodleJump.Gameplay
             OnTrigger(otherCollider);
         }
 
+        void OnTriggerStay2D(Collider2D otherCollider)
+        {
+            OnTrigger(otherCollider);
+        }
+
         private void OnTrigger(Collider2D otherCollider)
         {
             if (otherCollider.gameObject.layer == LayerMask.NameToLayer("Platform"))
@@ -105,11 +110,6 @@ namespace DoodleJump.Gameplay
                     Jump();
                 }
             }
-        }
-
-        void OnTriggerStay2D(Collider2D otherCollider)
-        {
-            OnTrigger(otherCollider);
         }
     }
 }
