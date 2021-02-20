@@ -76,5 +76,10 @@ namespace DoodleJump.Common
         {
             gameObject.SetActive(active);
         }
+
+        public virtual void Destroy()
+        {
+            GameObject.Destroy(gameObject);
+        }
     }
 }
