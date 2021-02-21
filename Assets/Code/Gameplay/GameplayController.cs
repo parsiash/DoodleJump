@@ -9,6 +9,22 @@ namespace DoodleJump.Gameplay
         private CharacterController _character;
         private List<IChunk> _chunks;
         private IChunkSystem _chunkSystem;
+
+        private int _score;
+        public int Score
+        {
+            get
+            {
+                if(!_character)
+                {
+                    return 0;
+                }
+
+                var characterPosition = _character.Position;
+                _score = Mathf.Max(_score, Mathf.CeilToInt(characterPosition.y));
+                return _score;
+            }
+        }
         
         [SerializeField] private Platform platformPrefab;
 
@@ -16,6 +32,7 @@ namespace DoodleJump.Gameplay
         {
             _character = character;
             _chunks = new List<IChunk>();
+            _score = 0;
         }
 
         void Update()

@@ -23,6 +23,8 @@ namespace DoodleJump
         {
             var gameController = UnityEngine.Object.FindObjectOfType<Gameplay.GameplayController>();
             var characterController  = UnityEngine.Object.FindObjectOfType<Gameplay.CharacterController>();
+            var hud = UnityEngine.Object.FindObjectOfType<UI.HUD>();
+
             if(!gameController)
             {
                 _logger.LogError($"Cannot start the game. No {nameof(Gameplay.GameplayController)} found.");
@@ -30,6 +32,7 @@ namespace DoodleJump
             }
             
             gameController.Initialize(null, characterController);
+            hud.Initialize(gameController);
         }
 
         void Update()
