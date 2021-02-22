@@ -48,6 +48,13 @@ namespace DoodleJump.Gameplay
             FitSize(new Vector2(6, 10));
         }
 
+        public void SetY(float y)
+        {
+            var position = transform.position;
+            position.y = y;
+            transform.position = position;
+        }
+
         public void FitSize(Vector2 minSize)
         {
             var camera = UnityCamera;

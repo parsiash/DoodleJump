@@ -33,6 +33,8 @@ namespace DoodleJump.Gameplay
             _character = character;
             _chunks = new List<IChunk>();
             _score = 0;
+
+            _character.StartGame();
         }
 
         void Update()

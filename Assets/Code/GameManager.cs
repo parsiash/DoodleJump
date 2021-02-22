@@ -39,8 +39,13 @@ namespace DoodleJump
         {
             if(Input.GetKeyDown(KeyCode.R))
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+                Reset();
             }
+        }
+
+        public void Reset()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
     }
 }

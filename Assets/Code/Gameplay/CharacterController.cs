@@ -19,24 +19,16 @@ namespace DoodleJump.Gameplay
 
         private Vector2 _speed;
 
-        private Camera _mainCamera;
-        private Camera mainCamera
-        {
-            get
-            {
-                if(!_mainCamera)
-                {
-                    _mainCamera = Camera.main;
-                }
-
-                return _mainCamera;
-            }
-        }
+        private UniversalCamera universalCamera => UniversalCamera.Instance;
+        private Camera mainCamera => UniversalCamera.Instance.UnityCamera;
 
         private CharacterInputController _inputController;
 
-        void Start()
+        public void StartGame()
         {
+            Position = Vector2.zero;
+            universalCamera.SetY(0);
+            
             SetSpeed(Vector2.zero);
             _inputController = new CharacterInputController(this, UniversalCamera.Instance.DragListener, dragFactor);
         }
@@ -52,8 +44,15 @@ namespace DoodleJump.Gameplay
 
             //update camera position
             var cameraPos = mainCamera.transform.position;
-            cameraPos.y = Mathf.Max(cameraPos.y, Position.y);
-            mainCamera.transform.position = cameraPos;
+            universalCamera.SetY(Mathf.Max(cameraPos.y, Position.y));
+
+            var cameraBox = UniversalCamera.Instance.CamerBox;
+            if(Position.y < cameraBox.BottomY)
+            {
+                //lose
+                print("lose");
+                GameManager.Instance.Reset();
+            }
         }
 
         public void MoveXWithSpeed(float factor)
