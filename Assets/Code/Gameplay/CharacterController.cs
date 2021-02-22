@@ -33,58 +33,18 @@ namespace DoodleJump.Gameplay
             }
         }
 
-        public void InitializeForTheGame()
-        {
-            SetSpeed(Vector2.zero);
-        }
-
-        private DragListenerBox dragListener => UniversalCamera.Instance.DragListener;
+        private CharacterInputController _inputController;
 
         void Start()
         {
-            dragListener.OnUniversalDrag += OnDrag;
-            dragListener.OnUniversalBeginDrag += OnBeginDrag;
-            dragListener.OnUniversalEndDrag += OnEndDrag;
+            SetSpeed(Vector2.zero);
+            _inputController = new CharacterInputController(this, UniversalCamera.Instance.DragListener, dragFactor);
         }
 
-        private Vector2 _startDragWorldPosition;
-        private Vector2 _lastPointPosition;
-        private bool _isDragging;
-        private float dragSign;
-
-        private const float DRAG_THRESH = 3f;
-
-        public void OnDrag(Vector2 worldPosition, Vector2 WorldDelta)
-        {
-        }
-
-        public void OnBeginDrag(Vector2 worldPosition)
-        {
-            _startDragWorldPosition = worldPosition;
-            _lastPointPosition = worldPosition;
-            dragSign = 0f;
-            _isDragging = true;
-        }
-
-        public void OnEndDrag(Vector2 worldPosition)
-        {
-            _isDragging = false;
-        }
 
         void Update()
         {
-            var worldPosition = InputManager.Instance.TouchPosition;
-            var worldDelta = worldPosition - _lastPointPosition;
-            _lastPointPosition = worldPosition;
-
-            float currentDragSign = Mathf.Sign(worldDelta.x);
-            if (currentDragSign != dragSign && Mathf.Abs(worldDelta.x) > 0.01f)
-            {
-                _startDragWorldPosition = worldPosition;
-                dragSign = currentDragSign;
-            }
-            var dragAmount = worldPosition.x - _startDragWorldPosition.x;
-            MoveX(dragAmount * dragFactor * Time.deltaTime);
+            _inputController.Update(Time.deltaTime);
 
             //handle gravity movement
             SetSpeed(_speed + Vector2.up * accelerationY * Time.deltaTime);
@@ -107,7 +67,7 @@ namespace DoodleJump.Gameplay
             mainCamera.transform.position = cameraPos;
         }
 
-        private void MoveX(float delta)
+        public void MoveX(float delta)
         {
             //move position by delta
             var position = Position;
