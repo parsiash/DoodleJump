@@ -46,10 +46,12 @@ namespace DoodleJump.Gameplay
 
         public void Update(float dt)
         {
+            //keep touch positions
             var worldPosition = InputManager.Instance.TouchPosition;
             var worldDelta = worldPosition - _lastPointPosition;
             _lastPointPosition = worldPosition;
 
+            //handle swipe direction change
             float currentDragSign = Mathf.Sign(worldDelta.x);
             if (currentDragSign != dragSign && Mathf.Abs(worldDelta.x) > 0.01f)
             {
@@ -57,8 +59,13 @@ namespace DoodleJump.Gameplay
                 dragSign = currentDragSign;
             }
 
+            //handle swipe input
             var dragAmount = worldPosition.x - _startDragWorldPosition.x;
             _character.MoveX(dragAmount * _dragFactor * Time.deltaTime);
+
+            //handle key input
+            var horizontal = Input.GetAxis("Horizontal");
+            _character.MoveXWithSpeed(horizontal);
         }
     }
 }

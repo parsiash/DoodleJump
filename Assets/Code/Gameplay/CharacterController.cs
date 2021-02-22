@@ -50,21 +50,15 @@ namespace DoodleJump.Gameplay
             SetSpeed(_speed + Vector2.up * accelerationY * Time.deltaTime);
             ApplyMovement();
 
-            //handle x movement
-            var horizontal = Input.GetAxis("Horizontal");
-            if(Input.GetKey(KeyCode.RightArrow))
-            {
-                horizontal = 1f;
-            }else if(Input.GetKey(KeyCode.LeftArrow))
-            {
-                horizontal = -1f;
-            }
-            MoveX(horizontal * moveSpeedX * Time.deltaTime);
-
             //update camera position
             var cameraPos = mainCamera.transform.position;
             cameraPos.y = Mathf.Max(cameraPos.y, Position.y);
             mainCamera.transform.position = cameraPos;
+        }
+
+        public void MoveXWithSpeed(float factor)
+        {
+            MoveX(factor * moveSpeedX * Time.deltaTime);
         }
 
         public void MoveX(float delta)
