@@ -6,39 +6,55 @@ namespace DoodleJump.Gameplay.Chunks
 {
     public class SimplePlatformChunk : IPlatformChunk
     {
+        private float _length;
         public float Length => _length;
 
-        private float _length;
-        private Vector2 _startPosition;
-
         private List<Platform> _platforms;
-        private Platform _platformPrefab;
-        public IEnumerable<IEntity> Entities => throw new System.NotImplementedException();
+        public IEnumerable<IEntity> Entities => _platforms;
 
-        public Box BoundingBox => new Box(_startPosition, _startPosition + Vector2.up * Length);
+        private Vector2 startPosition => _configuration.startPosition;
+        public Box BoundingBox => new Box(startPosition, startPosition + Vector2.up * Length);
 
         private bool _isDisposed;
         public bool IsActive => !_isDisposed;
 
-        public SimplePlatformChunk(Vector2 startPosition, float length, Platform platformPrefab)
+        public class Configuration
         {
-            _startPosition = startPosition;
-            _length = length;
-            _platformPrefab = platformPrefab;
+            public Vector2 startPosition { get; set; }
+            public int platformCount { get; set; }
+            public float minInterval { get; set; }
+            public float maxInterval { get; set; }
+            public Platform platformPrefab { get; set; }
 
+            public Configuration(Vector2 startPosition, int platformCount, float minInterval, float maxInterval, Platform platformPrefab)
+            {
+                this.startPosition = startPosition;
+                this.platformCount = platformCount;
+                this.minInterval = minInterval;
+                this.maxInterval = maxInterval;
+                this.platformPrefab = platformPrefab;
+            }
+        }
+        private Configuration _configuration;
+
+        public SimplePlatformChunk(Configuration configuration)
+        {
+            _length = 0f;
+            _configuration = configuration;
             _platforms = new List<Platform>();
         }
 
         public void Initialize()
         {
-            float currentLength = 0;
+            _length = 0f;
 
-            while(currentLength < _length)
+            for(int i = 0; i < _configuration.platformCount; i++)
             {
-                currentLength += Random.value * 2;
+                var interval = Random.Range(_configuration.minInterval, _configuration.maxInterval);
+                _length += interval;
 
-                var platform = GameObject.Instantiate<Platform>(_platformPrefab);
-                platform.Position = _startPosition + Vector2.up * currentLength + Vector2.right * Random.Range(-2, 2);
+                var platform = GameObject.Instantiate<Platform>(_configuration.platformPrefab);
+                platform.Position = startPosition + Vector2.up * _length + Vector2.right * Random.Range(-2, 2);
 
                 _platforms.Add(platform);
             }

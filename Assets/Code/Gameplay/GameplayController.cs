@@ -74,7 +74,15 @@ namespace DoodleJump.Gameplay
 
         IChunk CreateChunk(float bottomY, float length)
         {
-            var chunk = new SimplePlatformChunk(Vector2.up * bottomY, length, platformPrefab);
+            var configuration = new SimplePlatformChunk.Configuration(
+                Vector2.up * bottomY,
+                10,
+                Mathf.Lerp(0.2f, 1, bottomY / 100f),
+                Mathf.Lerp(1, 3, bottomY / 100f),
+                platformPrefab
+            );
+
+            var chunk = new SimplePlatformChunk(configuration);
             chunk.Initialize();
             return chunk;
         }
