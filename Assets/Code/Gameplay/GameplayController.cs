@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DoodleJump.Common;
+using DoodleJump.Gameplay.Chunks;
 using UnityEngine;
 
 namespace DoodleJump.Gameplay

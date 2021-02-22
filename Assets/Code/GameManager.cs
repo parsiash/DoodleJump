@@ -19,7 +19,7 @@ namespace DoodleJump
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        private void OnSceneLoaded(Scene scebe, LoadSceneMode loadSceneMode)
+        private void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
             var gameController = UnityEngine.Object.FindObjectOfType<Gameplay.GameplayController>();
             var characterController  = UnityEngine.Object.FindObjectOfType<Gameplay.CharacterController>();

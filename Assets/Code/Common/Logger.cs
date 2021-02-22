@@ -31,6 +31,16 @@ namespace DoodleJump.Common
 
     public class Logger : ILogger
     {
+        private static Logger instance;
+        public static Logger Instance
+        {
+            get
+            {
+                instance = instance ?? new Logger();
+                return instance;
+            }
+        }
+
         public void Log(LogLevel logLevel, string message)
         {
             switch(logLevel)

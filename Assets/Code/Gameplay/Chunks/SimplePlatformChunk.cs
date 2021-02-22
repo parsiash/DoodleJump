@@ -2,23 +2,8 @@ using System.Collections.Generic;
 using DoodleJump.Common;
 using UnityEngine;
 
-namespace DoodleJump.Gameplay
+namespace DoodleJump.Gameplay.Chunks
 {
-    public interface IChunk
-    {
-        float Length { get; }
-        Box BoundingBox { get; }
-        void Initialize();
-        void Dispose();
-        bool IsActive { get; }
-        IEnumerable<IEntity> Entities { get; }
-    }
-
-    public interface IPlatformChunk : IChunk
-    {
-
-    }
-
     public class SimplePlatformChunk : IPlatformChunk
     {
         public float Length => _length;
