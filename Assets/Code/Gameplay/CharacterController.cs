@@ -13,6 +13,7 @@ namespace DoodleJump.Gameplay
         [SerializeField] private int jumpSpeed = 12;
         [SerializeField] private float accelerationY = -20;
         [SerializeField] private float moveSpeedX = 8;
+        [SerializeField] private float dragFactor = 2;
 
         private const float SCREEN_HALF_WIDTH = 3;
 
@@ -37,14 +38,67 @@ namespace DoodleJump.Gameplay
             SetSpeed(Vector2.zero);
         }
 
+        private DragListenerBox dragListener => UniversalCamera.Instance.DragListener;
+
+        void Start()
+        {
+            dragListener.OnUniversalDrag += OnDrag;
+            dragListener.OnUniversalBeginDrag += OnBeginDrag;
+            dragListener.OnUniversalEndDrag += OnEndDrag;
+        }
+
+        private Vector2 _startDragWorldPosition;
+        private Vector2 _lastPointPosition;
+        private bool _isDragging;
+        private float dragSign;
+
+        private const float DRAG_THRESH = 3f;
+
+        public void OnDrag(Vector2 worldPosition, Vector2 WorldDelta)
+        {
+        }
+
+        public void OnBeginDrag(Vector2 worldPosition)
+        {
+            _startDragWorldPosition = worldPosition;
+            _lastPointPosition = worldPosition;
+            dragSign = 0f;
+            _isDragging = true;
+        }
+
+        public void OnEndDrag(Vector2 worldPosition)
+        {
+            _isDragging = false;
+        }
+
         void Update()
         {
+            var worldPosition = InputManager.Instance.TouchPosition;
+            var worldDelta = worldPosition - _lastPointPosition;
+            _lastPointPosition = worldPosition;
+
+            float currentDragSign = Mathf.Sign(worldDelta.x);
+            if (currentDragSign != dragSign && Mathf.Abs(worldDelta.x) > 0.01f)
+            {
+                _startDragWorldPosition = worldPosition;
+                dragSign = currentDragSign;
+            }
+            var dragAmount = worldPosition.x - _startDragWorldPosition.x;
+            MoveX(dragAmount * dragFactor * Time.deltaTime);
+
             //handle gravity movement
             SetSpeed(_speed + Vector2.up * accelerationY * Time.deltaTime);
             ApplyMovement();
 
             //handle x movement
             var horizontal = Input.GetAxis("Horizontal");
+            if(Input.GetKey(KeyCode.RightArrow))
+            {
+                horizontal = 1f;
+            }else if(Input.GetKey(KeyCode.LeftArrow))
+            {
+                horizontal = -1f;
+            }
             MoveX(horizontal * moveSpeedX * Time.deltaTime);
 
             //update camera position
