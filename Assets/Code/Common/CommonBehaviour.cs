@@ -81,5 +81,20 @@ namespace DoodleJump.Common
         {
             GameObject.Destroy(gameObject);
         }
+
+        public T AddChildWithComponent<T>(string name = "") where T : Component
+        {
+            if(string.IsNullOrEmpty(name))
+            {
+                name = typeof(T).Name;
+            }
+
+            var go = new GameObject(name);
+            go.transform.SetParent(transform);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localScale  = Vector3.one;
+
+            return go.AddComponent<T>();
+        }
     }
 }
