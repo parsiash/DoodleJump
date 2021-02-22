@@ -28,7 +28,7 @@ namespace DoodleJump.Gameplay
         {
             Position = Vector2.zero;
             universalCamera.SetY(0);
-            
+
             SetSpeed(Vector2.zero);
             _inputController = new CharacterInputController(this, UniversalCamera.Instance.DragListener, dragFactor);
         }
@@ -46,11 +46,10 @@ namespace DoodleJump.Gameplay
             var cameraPos = mainCamera.transform.position;
             universalCamera.SetY(Mathf.Max(cameraPos.y, Position.y));
 
+            //handle losing
             var cameraBox = UniversalCamera.Instance.CamerBox;
             if(Position.y < cameraBox.BottomY)
             {
-                //lose
-                print("lose");
                 GameManager.Instance.Reset();
             }
         }
