@@ -7,6 +7,7 @@ namespace DoodleJump.Common
     {
         Vector2 Position { get; set; }
         float ZIndex { get; set; }
+        void Reset();
     }
 
     public class Entity : CommonBehaviour, IEntity
@@ -38,6 +39,10 @@ namespace DoodleJump.Common
                 position.z = value;
                 transform.position = position;
             }
+        }
+
+        public virtual void Reset()
+        {
         }
     }
 }
