@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DoodleJump.Common;
 using DoodleJump.Gameplay.Chunks;
+using DoodleJump.UI;
 using UnityEngine;
 
 namespace DoodleJump.Gameplay
@@ -8,24 +9,9 @@ namespace DoodleJump.Gameplay
     public class GameplayController : CommonBehaviour
     {
         private CharacterController _character;
+        private HUD _hud;
         private List<IChunk> _chunks;
         private IChunkSystem _chunkSystem;
-
-        private int _score;
-        public int Score
-        {
-            get
-            {
-                if(!_character)
-                {
-                    return 0;
-                }
-
-                var characterPosition = _character.Position;
-                _score = Mathf.Max(_score, Mathf.CeilToInt(characterPosition.y));
-                return _score;
-            }
-        }
         
         [SerializeField] private Platform platformPrefab;
         [SerializeField] private MovingPlatform movingPlatformPrefab;
@@ -52,15 +38,19 @@ namespace DoodleJump.Gameplay
             }
         }
 
-        public void Initialize(IChunkSystem chunkSystem, CharacterController character)
+        private OutroMenu _outroMenu;
+
+        public void Initialize(IChunkSystem chunkSystem, HUD hud, CharacterController character, OutroMenu outroMenu)
         {
             _character = character;
-            _chunks = new List<IChunk>();
-            _score = 0;
+            _outroMenu = outroMenu;
+            _hud = hud;
 
-            _world = new World(character, entityFactory);
-            _world.OnStart();
+            _chunks = new List<IChunk>();
+
+            ResetGame();
         }
+
 
         void Update()
         {
@@ -109,6 +99,42 @@ namespace DoodleJump.Gameplay
             var chunk = new SimplePlatformChunk(configuration);
             chunk.Initialize();
             return chunk;
+        }
+        
+        private void ClearChunks()
+        {
+            foreach(var chunk in _chunks)
+            {
+                if(chunk != null)
+                {
+                    chunk.Dispose();
+                }
+            }
+
+            _chunks.Clear();
+        }
+
+        private void ResetGame()
+        {
+            if(_world != null)
+            {
+                _world.Reset(); 
+            }
+            ClearChunks();
+
+            _world = new World(_character, entityFactory, OnLose);
+            _world.OnStart();
+
+            //init hud
+            _hud.Initialize(_world);
+
+            _outroMenu.Hide();
+        }
+
+        public void OnLose(int score)
+        {
+            _outroMenu.Show(score, ResetGame);
+            ClearChunks();
         }
     }
 

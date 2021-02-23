@@ -56,7 +56,7 @@ namespace DoodleJump.Gameplay
             var cameraBox = UniversalCamera.Instance.CamerBox;
             if(Position.y < cameraBox.BottomY)
             {
-                GameManager.Instance.Reset();
+                _world.OnLose();
             }
         }
 

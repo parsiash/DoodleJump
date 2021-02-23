@@ -24,6 +24,7 @@ namespace DoodleJump
             var gameController = UnityEngine.Object.FindObjectOfType<Gameplay.GameplayController>();
             var characterController  = UnityEngine.Object.FindObjectOfType<Gameplay.CharacterController>();
             var hud = UnityEngine.Object.FindObjectOfType<UI.HUD>();
+            var outroMenu = UnityEngine.Object.FindObjectOfType<UI.OutroMenu>();
 
             if(!gameController)
             {
@@ -31,8 +32,7 @@ namespace DoodleJump
                 return;
             }
             
-            gameController.Initialize(null, characterController);
-            hud.Initialize(gameController);
+            gameController.Initialize(null, hud, characterController, outroMenu);
         }
 
         void Update()

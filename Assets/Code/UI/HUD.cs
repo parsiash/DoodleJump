@@ -9,20 +9,20 @@ namespace DoodleJump.UI
 {
     public class HUD : CommonBehaviour
     {
-        private GameplayController _gameplayController;
+        private IWorld _world;
 
         [SerializeField] private TextMeshProUGUI _scoreText;
 
-        public void Initialize(GameplayController gameplayController)
+        public void Initialize(IWorld world)
         {
-            _gameplayController = gameplayController;
+            _world = world;
         }
 
         void Update()
         {
-            if(_gameplayController)
+            if(_world != null)
             {
-                _scoreText.text = _gameplayController.Score.ToString();
+                _scoreText.text = _world.Score.ToString();
             }
         }
     }
