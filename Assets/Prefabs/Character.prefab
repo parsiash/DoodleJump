@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpSpeed: 12
+  springJumpSpeed: 20
   accelerationY: -20
   moveSpeedX: 8
   dragFactor: 7
