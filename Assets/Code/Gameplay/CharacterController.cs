@@ -10,13 +10,15 @@ namespace DoodleJump.Gameplay
     public class CharacterController : Entity
     {
         [SerializeField] private int jumpSpeed = 12;
+        [SerializeField] private int springJumpSpeed = 30;
         [SerializeField] private float accelerationY = -20;
         [SerializeField] private float moveSpeedX = 8;
         [SerializeField] private float dragFactor = 2;
 
         private const float SCREEN_HALF_WIDTH = 3;
 
-        private Vector2 _speed;
+        private Vector2 _velocity;
+        public Vector2 Veolicty => _velocity;
 
         private UniversalCamera universalCamera => UniversalCamera.Instance;
         private Camera mainCamera => UniversalCamera.Instance.UnityCamera;
@@ -30,7 +32,7 @@ namespace DoodleJump.Gameplay
             Position = Vector2.zero;
             universalCamera.SetY(0);
 
-            SetSpeed(Vector2.zero);
+            SetVelocity(Vector2.zero);
             _inputController = new CharacterInputController(this, UniversalCamera.Instance.DragListener, dragFactor);
         }
 
@@ -42,7 +44,7 @@ namespace DoodleJump.Gameplay
             //handle gravity movement
             if(_rocket == null)
             {
-                SetSpeed(_speed + Vector2.up * accelerationY * Time.deltaTime);
+                SetVelocity(_velocity + Vector2.up * accelerationY * Time.deltaTime);
                 ApplyMovement();
             }
 
@@ -91,19 +93,24 @@ namespace DoodleJump.Gameplay
             SetSpeedY(jumpSpeed);
         }
 
+        public void SpringJump()
+        {
+            Jump(springJumpSpeed);
+        }
+
         private void ApplyMovement()
         {
-            Position += _speed * Time.deltaTime;
+            Position += _velocity * Time.deltaTime;
         }
 
         private void SetSpeedY(float speedY)
         {
-            _speed.y = speedY;
+            _velocity.y = speedY;
         }
 
-        private void SetSpeed(Vector2 speed)
+        private void SetVelocity(Vector2 speed)
         {
-            _speed = speed;
+            _velocity = speed;
         }
 
         void OnTriggerEnter2D(Collider2D otherCollider)
@@ -120,7 +127,7 @@ namespace DoodleJump.Gameplay
         {
             if (otherCollider.gameObject.layer == LayerMask.NameToLayer("Platform"))
             {
-                if (_speed.y < 0)
+                if (_velocity.y < 0)
                 {
                     Jump();
                 }
