@@ -10,6 +10,8 @@ namespace DoodleJump.Gameplay
 
         void OnStart();
         void Reset();
+
+        DoodleJump.Common.ILogger Logger { get; }
     }
     
     public class World : IWorld
@@ -19,6 +21,8 @@ namespace DoodleJump.Gameplay
 
         private CharacterController _character;
         public CharacterController Character => _character;
+
+        public Common.ILogger Logger => Common.Logger.Instance;
 
         public World(CharacterController character)
         {

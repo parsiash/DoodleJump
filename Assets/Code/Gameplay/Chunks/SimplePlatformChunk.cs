@@ -27,8 +27,9 @@ namespace DoodleJump.Gameplay.Chunks
             public float maxInterval { get; set; }
             public Platform platformPrefab { get; set; }
             public MovingPlatform movingPlatformPrefab { get; set; }
+            public Rocket rocketPrefab { get; set; }
 
-            public Configuration(IWorld world, Vector2 startPosition, int platformCount, float minInterval, float maxInterval, Platform platformPrefab, MovingPlatform movingPlatformPrefab)
+            public Configuration(IWorld world, Vector2 startPosition, int platformCount, float minInterval, float maxInterval, Platform platformPrefab, MovingPlatform movingPlatformPrefab, Rocket rocketPrefab)
             {
                 this.world = world;
                 this.startPosition = startPosition;
@@ -37,6 +38,7 @@ namespace DoodleJump.Gameplay.Chunks
                 this.maxInterval = maxInterval;
                 this.platformPrefab = platformPrefab;
                 this.movingPlatformPrefab = movingPlatformPrefab;
+                this.rocketPrefab = rocketPrefab;
             }
         }
         private Configuration _configuration;
@@ -66,7 +68,18 @@ namespace DoodleJump.Gameplay.Chunks
                     platform = GameObject.Instantiate<Platform>(_configuration.platformPrefab);
                 }
 
+
                 platform.Position = startPosition + Vector2.up * _length + Vector2.right * Random.Range(-2, 2);
+                
+                //add rocket to platform
+                if(Random.value < 0.05f)
+                {
+                    var rocket = GameObject.Instantiate<Rocket>(_configuration.rocketPrefab);
+                    rocket.Init(_configuration.world);
+                    rocket.transform.parent = platform.transform;
+                    rocket.Position = platform.Position;
+                }
+
                 platform.Init(_configuration.world);
                 _platforms.Add(platform);
             }

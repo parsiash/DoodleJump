@@ -29,6 +29,7 @@ namespace DoodleJump.Gameplay
         
         [SerializeField] private Platform platformPrefab;
         [SerializeField] private MovingPlatform movingPlatformPrefab;
+        [SerializeField] private Rocket rocketPrefab;
         private IWorld _world;
 
         public void Initialize(IChunkSystem chunkSystem, CharacterController character)
@@ -84,7 +85,8 @@ namespace DoodleJump.Gameplay
                 Mathf.Lerp(0.2f, 1, bottomY / 100f),
                 Mathf.Lerp(1, 3, bottomY / 100f),
                 platformPrefab,
-                movingPlatformPrefab
+                movingPlatformPrefab,
+                rocketPrefab
             );
 
             var chunk = new SimplePlatformChunk(configuration);

@@ -45,4 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platformPrefab: {fileID: 8532493330893767331, guid: 393d6f4cec3db3647aace9b14736703b,
     type: 3}
-  movingPlatformPrefab: {fileID: 0}
+  movingPlatformPrefab: {fileID: 5150755666725220761, guid: dc354482a8980174a8ec221fb1e29b0e,
+    type: 3}
+  rocketPrefab: {fileID: 4412819330729962184, guid: 4313279400552674e92c913e2e3f22bc,
+    type: 3}

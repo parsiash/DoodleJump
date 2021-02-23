@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DoodleJump.Common;
 using UnityEngine;
 
@@ -41,8 +40,11 @@ namespace DoodleJump.Gameplay
             _inputController.Update(Time.deltaTime);
 
             //handle gravity movement
-            SetSpeed(_speed + Vector2.up * accelerationY * Time.deltaTime);
-            ApplyMovement();
+            if(_rocket == null)
+            {
+                SetSpeed(_speed + Vector2.up * accelerationY * Time.deltaTime);
+                ApplyMovement();
+            }
 
             //update camera position
             var cameraPos = mainCamera.transform.position;
@@ -81,6 +83,11 @@ namespace DoodleJump.Gameplay
 
         public void Jump()
         {
+            Jump(jumpSpeed);
+        }
+
+        public void Jump(float jumpSpeed)
+        {
             SetSpeedY(jumpSpeed);
         }
 
@@ -118,6 +125,34 @@ namespace DoodleJump.Gameplay
                     Jump();
                 }
             }
+            else if (otherCollider.gameObject.layer == LayerMask.NameToLayer("Collectible"))
+            {
+                var collectible = otherCollider.GetComponentInParent<ICollectible>();
+                if(collectible == null)
+                {
+                    _world.Logger.LogError($"Collectible has no ICollectible component attached. GameObject name : {otherCollider?.gameObject.name}");
+                    return;
+                }
+
+                collectible.OnCollected(this);
+            }
+        }
+
+        private Rocket _rocket;
+        public bool AttachRocket(Rocket rocket)
+        {
+            if(_rocket != null)
+            {
+                return false;
+            }
+
+            _rocket = rocket;
+            return true;
+        }
+
+        public void DetachRocket(Rocket rocket)
+        {
+            _rocket = null;
         }
     }
 }
