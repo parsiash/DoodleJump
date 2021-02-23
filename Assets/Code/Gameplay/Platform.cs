@@ -2,7 +2,12 @@ using DoodleJump.Common;
 
 namespace DoodleJump.Gameplay
 {
-    public class Platform : Entity
+    public interface IPlatform : IEntity
+    {
+
+    }
+
+    public class Platform : Entity, IPlatform
     {
 
     }

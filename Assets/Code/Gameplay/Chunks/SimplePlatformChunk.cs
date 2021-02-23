@@ -20,19 +20,23 @@ namespace DoodleJump.Gameplay.Chunks
 
         public class Configuration
         {
+            public IWorld world { get; set; }
             public Vector2 startPosition { get; set; }
             public int platformCount { get; set; }
             public float minInterval { get; set; }
             public float maxInterval { get; set; }
             public Platform platformPrefab { get; set; }
+            public MovingPlatform movingPlatformPrefab { get; set; }
 
-            public Configuration(Vector2 startPosition, int platformCount, float minInterval, float maxInterval, Platform platformPrefab)
+            public Configuration(IWorld world, Vector2 startPosition, int platformCount, float minInterval, float maxInterval, Platform platformPrefab, MovingPlatform movingPlatformPrefab)
             {
+                this.world = world;
                 this.startPosition = startPosition;
                 this.platformCount = platformCount;
                 this.minInterval = minInterval;
                 this.maxInterval = maxInterval;
                 this.platformPrefab = platformPrefab;
+                this.movingPlatformPrefab = movingPlatformPrefab;
             }
         }
         private Configuration _configuration;
@@ -53,9 +57,17 @@ namespace DoodleJump.Gameplay.Chunks
                 var interval = Random.Range(_configuration.minInterval, _configuration.maxInterval);
                 _length += interval;
 
-                var platform = GameObject.Instantiate<Platform>(_configuration.platformPrefab);
-                platform.Position = startPosition + Vector2.up * _length + Vector2.right * Random.Range(-2, 2);
+                Platform platform = null;
+                if(Random.value > 0.7f)
+                {
+                    platform = GameObject.Instantiate<MovingPlatform>(_configuration.movingPlatformPrefab);
+                }else
+                {
+                    platform = GameObject.Instantiate<Platform>(_configuration.platformPrefab);
+                }
 
+                platform.Position = startPosition + Vector2.up * _length + Vector2.right * Random.Range(-2, 2);
+                platform.Init(_configuration.world);
                 _platforms.Add(platform);
             }
         }

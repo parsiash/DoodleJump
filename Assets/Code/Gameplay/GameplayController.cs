@@ -28,6 +28,8 @@ namespace DoodleJump.Gameplay
         }
         
         [SerializeField] private Platform platformPrefab;
+        [SerializeField] private MovingPlatform movingPlatformPrefab;
+        private IWorld _world;
 
         public void Initialize(IChunkSystem chunkSystem, CharacterController character)
         {
@@ -35,7 +37,8 @@ namespace DoodleJump.Gameplay
             _chunks = new List<IChunk>();
             _score = 0;
 
-            _character.StartGame();
+            _world = new World(character);
+            _world.OnStart();
         }
 
         void Update()
@@ -75,11 +78,13 @@ namespace DoodleJump.Gameplay
         IChunk CreateChunk(float bottomY, float length)
         {
             var configuration = new SimplePlatformChunk.Configuration(
+                _world,
                 Vector2.up * bottomY,
                 10,
                 Mathf.Lerp(0.2f, 1, bottomY / 100f),
                 Mathf.Lerp(1, 3, bottomY / 100f),
-                platformPrefab
+                platformPrefab,
+                movingPlatformPrefab
             );
 
             var chunk = new SimplePlatformChunk(configuration);

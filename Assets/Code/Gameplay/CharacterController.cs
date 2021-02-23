@@ -24,8 +24,10 @@ namespace DoodleJump.Gameplay
 
         private CharacterInputController _inputController;
 
-        public void StartGame()
+        public override void Init(IWorld world)
         {
+            base.Init(world);
+
             Position = Vector2.zero;
             universalCamera.SetY(0);
 

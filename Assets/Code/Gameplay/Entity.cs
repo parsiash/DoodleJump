@@ -1,17 +1,25 @@
-﻿using DoodleJump.Common;
+﻿using System.Collections.Generic;
+using DoodleJump.Common;
 using UnityEngine;
 
-namespace DoodleJump.Common
+namespace DoodleJump.Gameplay
 {
     public interface IEntity
     {
+        IWorld World { get; }
+        int Id { get; }
         Vector2 Position { get; set; }
         float ZIndex { get; set; }
+
+        void Init(IWorld world);
         void Reset();
     }
 
     public class Entity : CommonBehaviour, IEntity
     {
+        protected IWorld _world;
+        public IWorld World => _world;
+
         public virtual Vector2 Position 
         { 
             get
@@ -41,8 +49,17 @@ namespace DoodleJump.Common
             }
         }
 
+
+        public int Id => gameObject.GetInstanceID();
+
+        public virtual void Init(IWorld world)
+        {
+            _world = world;
+        }
+
         public virtual void Reset()
         {
+            _world = null;
         }
     }
 }
