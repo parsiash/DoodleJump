@@ -1,4 +1,4 @@
-using UnityEngine;
+using DoodleJump.Common;
 
 namespace DoodleJump.Gameplay
 {
@@ -11,9 +11,10 @@ namespace DoodleJump.Gameplay
         void OnStart();
         void Reset();
 
+        IEntityFactory EntityFactory { get; }
         DoodleJump.Common.ILogger Logger { get; }
     }
-    
+
     public class World : IWorld
     {
         public float LeftEdgeX => -2f;
@@ -24,8 +25,12 @@ namespace DoodleJump.Gameplay
 
         public Common.ILogger Logger => Common.Logger.Instance;
 
-        public World(CharacterController character)
+        private IEntityFactory _entityFactory;
+        public IEntityFactory EntityFactory => _entityFactory;
+
+        public World(CharacterController character, IEntityFactory entityFactory)
         {
+            _entityFactory = entityFactory;
             _character = character;
         }
 

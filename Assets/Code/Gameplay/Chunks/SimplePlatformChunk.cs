@@ -25,23 +25,19 @@ namespace DoodleJump.Gameplay.Chunks
             public int platformCount { get; set; }
             public float minInterval { get; set; }
             public float maxInterval { get; set; }
-            public Platform platformPrefab { get; set; }
-            public MovingPlatform movingPlatformPrefab { get; set; }
-            public Rocket rocketPrefab { get; set; }
 
-            public Configuration(IWorld world, Vector2 startPosition, int platformCount, float minInterval, float maxInterval, Platform platformPrefab, MovingPlatform movingPlatformPrefab, Rocket rocketPrefab)
+            public Configuration(IWorld world, Vector2 startPosition, int platformCount, float minInterval, float maxInterval)
             {
                 this.world = world;
                 this.startPosition = startPosition;
                 this.platformCount = platformCount;
                 this.minInterval = minInterval;
                 this.maxInterval = maxInterval;
-                this.platformPrefab = platformPrefab;
-                this.movingPlatformPrefab = movingPlatformPrefab;
-                this.rocketPrefab = rocketPrefab;
             }
         }
         private Configuration _configuration;
+
+        private IEntityFactory entityFactory => _configuration.world.EntityFactory;
 
         public SimplePlatformChunk(Configuration configuration)
         {
@@ -62,23 +58,34 @@ namespace DoodleJump.Gameplay.Chunks
                 Platform platform = null;
                 if(Random.value > 0.7f)
                 {
-                    platform = GameObject.Instantiate<MovingPlatform>(_configuration.movingPlatformPrefab);
+                    platform = entityFactory.CreateEntity<MovingPlatform>();
                 }else
                 {
-                    platform = GameObject.Instantiate<Platform>(_configuration.platformPrefab);
+                    platform = entityFactory.CreateEntity<Platform>();
                 }
 
 
                 platform.Position = startPosition + Vector2.up * _length + Vector2.right * Random.Range(-2, 2);
                 
                 //add rocket to platform
-                if(Random.value < 0.05f)
+                Entity collectible = null;
+                if(Random.value < 0.1f)
                 {
-                    var rocket = GameObject.Instantiate<Rocket>(_configuration.rocketPrefab);
-                    rocket.Init(_configuration.world);
-                    rocket.transform.parent = platform.transform;
-                    rocket.Position = platform.Position;
+                    var spring = entityFactory.CreateEntity<Spring>();
+                    collectible = spring;
+                }else if(Random.value < 0.05f)
+                {
+                    var rocket = entityFactory.CreateEntity<Rocket>();
+                    collectible = rocket;
                 }
+
+                if(collectible)
+                {
+                    collectible.Init(_configuration.world);
+                    collectible.transform.parent = platform.transform;
+                    collectible.Position = platform.Position;
+                }
+
 
                 platform.Init(_configuration.world);
                 _platforms.Add(platform);

@@ -30,7 +30,27 @@ namespace DoodleJump.Gameplay
         [SerializeField] private Platform platformPrefab;
         [SerializeField] private MovingPlatform movingPlatformPrefab;
         [SerializeField] private Rocket rocketPrefab;
+        [SerializeField] private Spring springPrefab;
         private IWorld _world;
+
+        private IEntityFactory _entityFactory;
+        private IEntityFactory entityFactory
+        {
+            get
+            {
+                if(_entityFactory == null)
+                {
+                    _entityFactory = _entityFactory ?? new EntityFactory(Common.Logger.Instance);
+                    
+                    _entityFactory.AddPrefab<Platform>(platformPrefab);
+                    _entityFactory.AddPrefab<MovingPlatform>(movingPlatformPrefab);
+                    _entityFactory.AddPrefab<Rocket>(rocketPrefab);
+                    _entityFactory.AddPrefab<Spring>(springPrefab);
+                }
+
+                return _entityFactory;
+            }
+        }
 
         public void Initialize(IChunkSystem chunkSystem, CharacterController character)
         {
@@ -38,7 +58,7 @@ namespace DoodleJump.Gameplay
             _chunks = new List<IChunk>();
             _score = 0;
 
-            _world = new World(character);
+            _world = new World(character, entityFactory);
             _world.OnStart();
         }
 
@@ -83,10 +103,7 @@ namespace DoodleJump.Gameplay
                 Vector2.up * bottomY,
                 10,
                 Mathf.Lerp(0.2f, 1, bottomY / 100f),
-                Mathf.Lerp(1, 3, bottomY / 100f),
-                platformPrefab,
-                movingPlatformPrefab,
-                rocketPrefab
+                Mathf.Lerp(1, 3, bottomY / 100f)
             );
 
             var chunk = new SimplePlatformChunk(configuration);
