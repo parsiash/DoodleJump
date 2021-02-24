@@ -10,6 +10,7 @@ namespace DoodleJump.Gameplay
     /// </summary>
     public class CharacterController : Entity
     {
+        [Header("Default Movement")]
         [SerializeField] private int jumpSpeed = 12;
         [SerializeField] private int springJumpSpeed = 30;
         [SerializeField] private float accelerationY = -20;

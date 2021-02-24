@@ -75,6 +75,7 @@ namespace DoodleJump.Gameplay
         public int Id => gameObject.GetInstanceID();
 
 
+        [Header("Box")]
         [SerializeField] private Vector2 boxSize = Vector2.one;
         [SerializeField] private Vector2 boxOffset = Vector2.zero;
         public Box box
