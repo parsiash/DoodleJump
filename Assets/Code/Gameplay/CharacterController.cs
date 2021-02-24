@@ -1,9 +1,89 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DoodleJump.Common;
 using UnityEngine;
 
+
 namespace DoodleJump.Gameplay
 {
+    public interface ICharacterMovementController
+    {
+        Vector2 Velocity { get; }
+        void Update(float dt);
+        void Jump(float jumpSpeed);
+    }
+
+    public class GravityMovementController : ICharacterMovementController
+    {
+        private CharacterController _character;
+        private float _accelerationY;
+        private Vector2 _velocity;
+        public Vector2 Velocity => _velocity;
+
+        public GravityMovementController(CharacterController character, Vector2 startVelocity, float accelerationY)
+        {
+            _character = character;
+            _velocity = startVelocity;
+            _accelerationY = accelerationY;
+        }
+
+        public void Update(float dt)
+        {
+            //handle gravity movement
+            SetVelocity(_velocity + Vector2.up * _accelerationY * dt);
+            _character.ApplyVelcity(_velocity);
+        }
+
+        private void SetVelocity(Vector2 speed)
+        {
+            _velocity = speed;
+        }
+
+        public void Jump(float jumpSpeed)
+        {
+            _velocity.y = jumpSpeed;
+        }
+    }
+
+    public class RocketMovementController : ICharacterMovementController
+    {
+        private CharacterController _character;
+        public Vector2 Velocity => Vector2.up * _velocity;
+        private AnimationCurve _velocityCurve;
+        private float _velocity;
+        private float _timer;
+        private float _moveTime;
+        private Action _onFinish;
+
+        public RocketMovementController(CharacterController character, AnimationCurve velocityCurve, float moveTime, Action onFinishCallback)
+        {
+            _character = character;
+            _velocityCurve = velocityCurve;
+            _moveTime = moveTime;
+            _onFinish = onFinishCallback;
+
+            _velocity = velocityCurve.Evaluate(0f);
+            _timer = 0f;
+        }
+
+        public void Update(float dt)
+        {
+            _velocity = _velocityCurve.Evaluate(Mathf.Clamp01(_timer / _moveTime));
+            _character.ApplyVelcity(Velocity);
+            
+            if(_timer >= _moveTime)
+            {
+                _onFinish();
+            }
+
+            _timer += dt;
+        }
+
+        public void Jump(float jumpSpeed)
+        {
+        }
+    }
+
     /// <summary>
     /// The main script on the main jumping character.
     /// </summary>
@@ -15,10 +95,16 @@ namespace DoodleJump.Gameplay
         [SerializeField] private float moveSpeedX = 8;
         [SerializeField] private float dragFactor = 2;
 
+        [Header("Rocket")]
+        [SerializeField] private AnimationCurve rocketMovementCurve;
+        [SerializeField] private float rocketMovementTime;
+
+
         private const float SCREEN_HALF_WIDTH = 3;
 
-        private Vector2 _velocity;
-        public Vector2 Veolicty => _velocity;
+        private ICharacterMovementController _verticalMovementController;
+        public Vector2 Veolicty => Vector2.up * _verticalMovementController.Velocity;
+        public bool IsRocketAttached =>  _verticalMovementController is RocketMovementController;
 
         private UniversalCamera universalCamera => UniversalCamera.Instance;
         private Camera mainCamera => UniversalCamera.Instance.UnityCamera;
@@ -32,7 +118,7 @@ namespace DoodleJump.Gameplay
             Position = Vector2.zero;
             universalCamera.SetY(0);
 
-            SetVelocity(Vector2.zero);
+            _verticalMovementController = new GravityMovementController(this, Vector2.zero, accelerationY);
             _inputController = new CharacterInputController(this, UniversalCamera.Instance.DragListener, dragFactor);
         }
 
@@ -41,12 +127,7 @@ namespace DoodleJump.Gameplay
         {
             _inputController.Update(Time.deltaTime);
 
-            //handle gravity movement
-            if(_rocket == null)
-            {
-                SetVelocity(_velocity + Vector2.up * accelerationY * Time.deltaTime);
-                ApplyMovement();
-            }
+            _verticalMovementController.Update(Time.deltaTime);
 
             //update camera position
             var cameraPos = mainCamera.transform.position;
@@ -90,6 +171,7 @@ namespace DoodleJump.Gameplay
             }
         }
 
+
         public void Jump()
         {
             Jump(jumpSpeed);
@@ -98,8 +180,12 @@ namespace DoodleJump.Gameplay
         private Animator animator => GetCachedComponentInChildren<Animator>();
         public void Jump(float jumpSpeed)
         {
-            animator.SetTrigger("Jump");
-            SetSpeedY(jumpSpeed);
+            _verticalMovementController.Jump(jumpSpeed);
+
+            if(!IsRocketAttached)
+            {
+                animator.SetTrigger("Jump");
+            }
         }
 
         public void SpringJump()
@@ -107,19 +193,9 @@ namespace DoodleJump.Gameplay
             Jump(springJumpSpeed);
         }
 
-        private void ApplyMovement()
+        public void ApplyVelcity(Vector2 velocity)
         {
-            Position += _velocity * Time.deltaTime;
-        }
-
-        private void SetSpeedY(float speedY)
-        {
-            _velocity.y = speedY;
-        }
-
-        private void SetVelocity(Vector2 speed)
-        {
-            _velocity = speed;
+            Position += velocity * Time.deltaTime;
         }
 
         void OnTriggerEnter2D(Collider2D otherCollider)
@@ -136,7 +212,7 @@ namespace DoodleJump.Gameplay
         {
             if (otherCollider.gameObject.layer == LayerMask.NameToLayer("Platform"))
             {
-                if (_velocity.y < 0)
+                if (Veolicty.y < 0)
                 {
                     Jump();
                 }
@@ -154,21 +230,20 @@ namespace DoodleJump.Gameplay
             }
         }
 
-        private Rocket _rocket;
         public bool AttachRocket(Rocket rocket)
         {
-            if(_rocket != null)
+            if (IsRocketAttached)
             {
                 return false;
             }
 
-            _rocket = rocket;
-            return true;
+            _verticalMovementController = new RocketMovementController(this, rocketMovementCurve, rocketMovementTime, () => DetachRocket(rocket));
+           return true;
         }
 
         public void DetachRocket(Rocket rocket)
         {
-            _rocket = null;
+            _verticalMovementController = new GravityMovementController(this, _verticalMovementController.Velocity, accelerationY);
         }
     }
 }

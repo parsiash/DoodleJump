@@ -9,8 +9,8 @@ namespace DoodleJump.Gameplay.Chunks
         private float _length;
         public float Length => _length;
 
-        private List<Platform> _platforms;
-        public IEnumerable<IEntity> Entities => _platforms;
+        private List<Entity> _entities;
+        public IEnumerable<IEntity> Entities => _entities;
 
         private Vector2 startPosition => _configuration.startPosition;
         public Box BoundingBox => new Box(startPosition, startPosition + Vector2.up * Length);
@@ -43,7 +43,7 @@ namespace DoodleJump.Gameplay.Chunks
         {
             _length = 0f;
             _configuration = configuration;
-            _platforms = new List<Platform>();
+            _entities = new List<Entity>();;
         }
 
         public void Initialize()
@@ -84,24 +84,26 @@ namespace DoodleJump.Gameplay.Chunks
                     collectible.Init(_configuration.world);
                     collectible.transform.parent = platform.transform;
                     collectible.Position = platform.Position + Vector2.up * (platform.Size.y / 2f + collectible.Size.y / 2f);
+
+                    _entities.Add(collectible);
                 }
 
 
                 platform.Init(_configuration.world);
-                _platforms.Add(platform);
+                _entities.Add(platform);
             }
         }
 
         public void Dispose()
         {
-            foreach(var platform in _platforms)
+            foreach(var entity in _entities)
             {
-                if(platform)
+                if(entity)
                 {
-                    platform.Destroy();
+                    entity.Destroy();
                 }
             }
-            _platforms.Clear();
+            _entities.Clear();
 
             _isDisposed = true;
         }

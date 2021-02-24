@@ -31,33 +31,8 @@ namespace DoodleJump.Gameplay
 
             if(character.AttachRocket(this))
             {
-                character.StartCoroutine(RocketMoving(character, () => character.DetachRocket(this)));
-                transform.SetParent(null);
                 _used = true;
-            }
-        }
-
-        IEnumerator RocketMoving(CharacterController character, System.Action OnFinish)
-        {
-            Position = character.Position;
-
-            float timer = 0f;
-            while(timer <= rocketTime)
-            {
-                this.SetY(Position.y + speed * Time.deltaTime);
-                this.SetX(character.Position.x);
-                
-                character.SetY(Position.y);
-
-                yield return null;
-                timer += Time.deltaTime;
-            }
-
-            character.Jump(speed);
-
-            if(OnFinish != null)
-            {
-                OnFinish();
+                Destroy();
             }
         }
     }
