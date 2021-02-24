@@ -77,6 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01ed18aef09c5ff4d8da7039ccff94ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxSize: {x: 0.41, y: 0.66}
+  boxOffset: {x: 0, y: 0.03}
   rocketTime: 2
   speed: 20
 --- !u!50 &963831797750227791

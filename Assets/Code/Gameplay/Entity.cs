@@ -11,6 +11,9 @@ namespace DoodleJump.Gameplay
         Vector2 Position { get; set; }
         float ZIndex { get; set; }
 
+        Box box { get; }
+        Vector2 Size { get; }
+
         void Init(IWorld world);
         void Reset();
     }
@@ -70,6 +73,25 @@ namespace DoodleJump.Gameplay
 
 
         public int Id => gameObject.GetInstanceID();
+
+
+        [SerializeField] private Vector2 boxSize = Vector2.one;
+        [SerializeField] private Vector2 boxOffset = Vector2.zero;
+        public Box box
+        {
+            get
+            {
+                return Box.CreateByPosition(Position + boxOffset, Size);
+            }
+        }
+
+        public Vector2 Size => boxSize * transform.lossyScale;
+
+        protected virtual void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(box.Position, box.Size);
+        }
 
         public virtual void Init(IWorld world)
         {

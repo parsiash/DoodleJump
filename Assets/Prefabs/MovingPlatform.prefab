@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1292ebc6b46b6714b9e2c37c34ab2a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxSize: {x: 1, y: 0.24}
+  boxOffset: {x: 0, y: 0}
   speed: 0.7
 --- !u!1001 &9110404764075598825
 PrefabInstance:

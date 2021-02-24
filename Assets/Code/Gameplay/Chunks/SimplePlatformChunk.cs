@@ -83,7 +83,7 @@ namespace DoodleJump.Gameplay.Chunks
                 {
                     collectible.Init(_configuration.world);
                     collectible.transform.parent = platform.transform;
-                    collectible.Position = platform.Position;
+                    collectible.Position = platform.Position + Vector2.up * (platform.Size.y / 2f + collectible.Size.y / 2f);
                 }
 
 

@@ -127,6 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84767b9763bb87c4691f8b39f77fe5f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxSize: {x: 1, y: 0.24}
+  boxOffset: {x: 0, y: 0}
 --- !u!1 &3112095670573460022
 GameObject:
   m_ObjectHideFlags: 0
