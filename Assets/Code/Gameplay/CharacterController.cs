@@ -81,6 +81,13 @@ namespace DoodleJump.Gameplay
             }
 
             Position = position;
+
+            if(Mathf.Abs(delta) >= 0.001f)
+            {
+                var theScale = transform.localScale;
+                theScale.x = delta > 0f ? 1f : -1f;
+                transform.localScale = theScale;
+            }
         }
 
         public void Jump()
@@ -88,8 +95,10 @@ namespace DoodleJump.Gameplay
             Jump(jumpSpeed);
         }
 
+        private Animator animator => GetCachedComponentInChildren<Animator>();
         public void Jump(float jumpSpeed)
         {
+            animator.SetTrigger("Jump");
             SetSpeedY(jumpSpeed);
         }
 
