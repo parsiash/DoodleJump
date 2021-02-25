@@ -53,13 +53,13 @@ namespace DoodleJump.Gameplay
                 return;
             }
 
-            var cameraBox = universalCamera.CamerBox;
+            var cameraBox = universalCamera.CameraBox;
 
             foreach(var planet in planets)
             {
                 if(planet)
                 {
-                    if(planet.box.TopY < cameraBox.BottomY)
+                    if(planet.box.TopY < cameraBox.BottomY - 20f)
                     {
                         planet.Destroy();
                     }

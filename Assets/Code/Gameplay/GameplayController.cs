@@ -13,6 +13,7 @@ namespace DoodleJump.Gameplay
         private HUD _hud;
         private List<IChunk> _chunks;
         private IChunkSystem _chunkSystem;
+        private OutroAnimationController _outroAnimationController;
         
         [SerializeField] private Platform platformPrefab;
         [SerializeField] private MovingPlatform movingPlatformPrefab;
@@ -44,10 +45,11 @@ namespace DoodleJump.Gameplay
 
         private OutroMenu _outroMenu;
 
-        public void Initialize(IChunkSystem chunkSystem, HUD hud, CharacterController character, PlanetGenerator planetGenerator, OutroMenu outroMenu)
+        public void Initialize(IChunkSystem chunkSystem, HUD hud, CharacterController character, PlanetGenerator planetGenerator, OutroAnimationController outroAnimationController, OutroMenu outroMenu)
         {
             _character = character;
             _planetGenerator = planetGenerator;
+            _outroAnimationController = outroAnimationController;
             _outroMenu = outroMenu;
             _hud = hud;
 
@@ -57,6 +59,8 @@ namespace DoodleJump.Gameplay
         }
 
 
+        private UniversalCamera universalCamera => UniversalCamera.Instance;
+
         void Update()
         {
             if(!_character)
@@ -65,26 +69,23 @@ namespace DoodleJump.Gameplay
             }
 
             var characterPosiiton = _character.Position;
-            var box = Box.CreateByPosition(characterPosiiton, new Vector2(10, 10));
 
-            float topY = box.BottomY;
+            var cameraBox = universalCamera.CameraBox;
+            float topY = cameraBox.BottomY;
 
-            //remove chunks that are past
             foreach(var chunk in _chunks)
             {
-                var chunkBoundingBox = chunk.BoundingBox;
-                if(chunkBoundingBox.TopY < box.BottomY)
+                chunk.Update();
+
+                if(chunk.IsActive)
                 {
-                    chunk.Dispose();
-                }else
-                {
-                    topY = Mathf.Max(chunkBoundingBox.TopY, topY);
+                    topY = Mathf.Max(chunk.BoundingBox.TopY, topY);
                 }
             }
             _chunks.RemoveAll(chunk => !chunk.IsActive);
 
             //create new chunk on top
-            if(box.TopY > topY - 1)
+            if(cameraBox.TopY > topY - 1)
             {
                 var chunk = CreateChunk(topY, 10);
                 _chunks.Add(chunk);
@@ -135,13 +136,23 @@ namespace DoodleJump.Gameplay
 
             _planetGenerator.Initialize(_world);
 
+            _outroAnimationController.Reset();
             _outroMenu.Hide();
+            _lost = false;
         }
 
+        //@TODO : refactor this hack by keeping world state and update entities on demand
+        private bool _lost;
         public void OnLose(int score)
         {
-            _outroMenu.Show(score, ResetGame);
-            ClearChunks();
+            if(!_lost)
+            {
+                _lost = true;
+                _outroAnimationController.StartOutroAnimation(_character, () => {
+                    _outroMenu.Show(score, ResetGame);
+                    ClearChunks();
+                });
+            }
         }
     }
 

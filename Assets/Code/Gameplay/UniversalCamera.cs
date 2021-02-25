@@ -6,14 +6,14 @@ namespace DoodleJump.Gameplay
 {
     public interface ICamera
     {
-        Box CamerBox { get; }
+        Box CameraBox { get; }
         Camera UnityCamera { get; }
     }
 
     [RequireComponent(typeof(Camera))]
     public class UniversalCamera : SingletonBehaviour<UniversalCamera>, ICamera
     {
-        public Box CamerBox
+        public Box CameraBox
         {
             get
             {
@@ -24,7 +24,19 @@ namespace DoodleJump.Gameplay
         }
         public Camera UnityCamera => GetCachedComponent<Camera>();
 
-        public Vector2 Position => transform.position;
+        public Vector2 Position
+        {
+            get
+            {
+                return transform.position;
+            }
+
+            set
+            {
+                var position = transform.position;
+                transform.position = new Vector3(value.x, value.y, position.z);
+            }
+        }
 
         private DragListenerBox _dragListener;
         public DragListenerBox DragListener
@@ -50,6 +62,11 @@ namespace DoodleJump.Gameplay
             FitSize(new Vector2(6, 10));
         }
 
+        public void Move(Vector2 delta)
+        {
+            Position += delta;
+        }
+
         public void SetY(float y)
         {
             var position = transform.position;
@@ -64,7 +81,7 @@ namespace DoodleJump.Gameplay
             var minHeight = Mathf.Max(minSize.y, camera.aspect * minSize.x);
             camera.orthographicSize = minHeight / 2f;
 
-            DragListener.SetSize(CamerBox.Size);
+            DragListener.SetSize(CameraBox.Size);
         }
     }
 }

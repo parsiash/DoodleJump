@@ -11,6 +11,7 @@ namespace DoodleJump.Gameplay.Chunks
         void Dispose();
         bool IsActive { get; }
         IEnumerable<IEntity> Entities { get; }
+        void Update();
     }
 
     public interface IPlatformChunk : IChunk

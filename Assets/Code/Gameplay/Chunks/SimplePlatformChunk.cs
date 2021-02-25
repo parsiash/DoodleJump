@@ -94,6 +94,30 @@ namespace DoodleJump.Gameplay.Chunks
             }
         }
 
+        public void Update()
+        {
+            var cameraBox = UniversalCamera.Instance.CameraBox;
+
+            var chunkBoundingBox = BoundingBox;
+            if(chunkBoundingBox.TopY < cameraBox.BottomY)
+            {
+                Dispose();
+            }else
+            {
+                foreach(var entity in _entities)
+                {
+                    if(entity)
+                    {
+                        if(entity.box.TopY < cameraBox.BottomY)
+                        {
+                            entity.Destroy();
+                        }
+                    }
+                }
+                _entities.RemoveAll(e => !e);
+            }
+        }
+
         public void Dispose()
         {
             foreach(var entity in _entities)

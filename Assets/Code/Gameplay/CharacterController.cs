@@ -56,7 +56,7 @@ namespace DoodleJump.Gameplay
             universalCamera.SetY(Mathf.Max(cameraPos.y, Position.y));
 
             //handle losing
-            var cameraBox = UniversalCamera.Instance.CamerBox;
+            var cameraBox = UniversalCamera.Instance.CameraBox;
             if(Position.y < cameraBox.BottomY)
             {
                 _world.OnLose();
