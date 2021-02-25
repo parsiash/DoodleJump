@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6951110995913763408}
   - component: {fileID: 434115025806230633}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: SpringCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

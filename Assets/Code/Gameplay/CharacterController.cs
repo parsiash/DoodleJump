@@ -139,23 +139,26 @@ namespace DoodleJump.Gameplay
 
         private void OnTrigger(Collider2D otherCollider)
         {
-            if (otherCollider.gameObject.layer == LayerMask.NameToLayer("Platform"))
+            switch(LayerMask.LayerToName(otherCollider.gameObject.layer))
             {
-                if (Veolicty.y < 0)
-                {
-                    Jump();
-                }
-            }
-            else if (otherCollider.gameObject.layer == LayerMask.NameToLayer("Collectible"))
-            {
-                var collectible = otherCollider.GetComponentInParent<ICollectible>();
-                if(collectible == null)
-                {
-                    _world.Logger.LogError($"Collectible has no ICollectible component attached. GameObject name : {otherCollider?.gameObject.name}");
-                    return;
-                }
+                case "Platform":
+                    if (Veolicty.y < 0)
+                    {
+                        Jump();
+                    }
+                    break;
+                    
+                case "Spring":
+                case "Collectible":
+                    var collectible = otherCollider.GetComponentInParent<ICollectible>();
+                    if(collectible == null)
+                    {
+                        _world.Logger.LogError($"Collectible has no ICollectible component attached. GameObject name : {otherCollider?.gameObject.name}");
+                        return;
+                    }
 
-                collectible.OnCollected(this);
+                    collectible.OnCollected(this);
+                    break;
             }
         }
 
