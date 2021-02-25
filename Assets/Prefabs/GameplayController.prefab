@@ -53,3 +53,5 @@ MonoBehaviour:
     type: 3}
   planetPrefab: {fileID: 6710250352802296871, guid: dff010a6a59fddb488241df67a15e26d,
     type: 3}
+  fallingRocketPrefab: {fileID: -2719255636323730856, guid: 3478104a2a561bd4ca3e530dbe271a0b,
+    type: 3}

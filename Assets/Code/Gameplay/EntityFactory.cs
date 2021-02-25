@@ -17,6 +17,18 @@ namespace DoodleJump.Gameplay
             return entityFactory.CreateEntity<T>(typeof(T).Name);
         }
 
+        public static T CreateEntity<T>(this IEntityFactory entityFactory, Vector2 position, float zIndex = 0f, float scale = 1f) where T : Entity
+        {
+            var entity = entityFactory.CreateEntity<T>(typeof(T).Name);
+            if(entity)
+            {
+                entity.Position = position;
+                entity.ZIndex = 0f; 
+            }
+
+            return entity;
+        }
+
         public static void AddPrefab<T>(this IEntityFactory entityFactory, T prefab) where T : Entity
         {
             entityFactory.AddPrefab(typeof(T).Name, prefab);

@@ -4,17 +4,23 @@ namespace DoodleJump.Gameplay
 {
     public class Parallax : Entity
     {
-        private UniversalCamera universalCamera => UniversalCamera.Instance;
-
+        [SerializeField] private float parallaxFactor = 0.5f;
         private Vector2 _previousCameraPosition;
-        private float _parallaxFactor = 0.5f;
+        
+        private UniversalCamera universalCamera => UniversalCamera.Instance;
 
         public void Init(float parallaxFactor, float zIndex)
         {
-            _parallaxFactor = parallaxFactor;
+            this.parallaxFactor = parallaxFactor;
             _previousCameraPosition = universalCamera.Position;
             ZIndex = zIndex;
         }
+
+        public void Init()
+        {
+            Init(parallaxFactor, 0f);
+        }
+
 
         void Update()
         {
@@ -23,7 +29,7 @@ namespace DoodleJump.Gameplay
 
             _previousCameraPosition = cameraPosition;
 
-            Position += cameraDelta * _parallaxFactor;
+            Position += cameraDelta * parallaxFactor;
         }
     }
 }

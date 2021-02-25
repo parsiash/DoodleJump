@@ -7,30 +7,43 @@ namespace DoodleJump.Gameplay
     public class AnimationEventHelper : CommonBehaviour
     {
         [SerializeField] private TextMeshProUGUI[] texts;
+        [SerializeField] private ParticleSystem[] particleSystems;
+
 
         public void OnSetTextAnimationEvent(AnimationEvent animationEvent)
         {
-            var textIndex = animationEvent.intParameter;
-            var text = GetText(textIndex);
+            var text = GetComponentByIndex(texts, animationEvent.intParameter);
             var textString = animationEvent.stringParameter;
 
             if(text == null)
             {
-                Common.Logger.Instance.LogError($"Set text animation event failed. No text with index : {textIndex} found.");
+                Common.Logger.Instance.LogError($"Set text animation event failed. No text with index : {animationEvent.intParameter} found.");
                 return;
             }
 
             text.text = textString;
         }
 
-        private TextMeshProUGUI GetText(int index)
+        public void PlayParticleSystem(AnimationEvent animationEvent)
         {
-            if(index < 0 || index >= texts.Length)
+            var particleSystem = GetComponentByIndex(particleSystems, animationEvent.intParameter);
+            if(particleSystem == null)
+            {
+                Common.Logger.Instance.LogError($"Play particle system failed, no particle system with index : {animationEvent.intParameter} found.");
+                return;
+            }
+
+            particleSystem.Play();
+        }
+
+        private T GetComponentByIndex<T>(T[] components, int index) where T : Component
+        {
+            if(index < 0 || index >= components.Length)
             {
                 return null;
             }
 
-            return texts[index];
+            return components[index];
         }
     }
 }

@@ -30,6 +30,8 @@ namespace DoodleJump.Gameplay
 
         private CharacterInputController _inputController;
 
+        [SerializeField] private GameObject attackedRocket;
+
         public override void Init(IWorld world)
         {
             base.Init(world);
@@ -164,13 +166,19 @@ namespace DoodleJump.Gameplay
                 return false;
             }
 
+            attackedRocket.SetActive(true);
             _movementController = new RocketMovementController(this, rocketMovementCurve, rocketMovementTime, () => DetachRocket(rocket));
            return true;
         }
 
         public void DetachRocket(Rocket rocket)
         {
+            attackedRocket.SetActive(false);
             _movementController = new GravityMovementController(this, _movementController.Velocity, accelerationY);
+            
+            //spawn falling rocket
+            var fallingRocket = _world.EntityFactory.CreateEntity<FallingRocket>(Position);
+            fallingRocket.StartFalling();
         }
     }
 }
