@@ -594,6 +594,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: IntroAnimationController
       objectReference: {fileID: 0}
+    - target: {fileID: 2314452967441765229, guid: ff031f72c2d29a748833cf664ed49798,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff031f72c2d29a748833cf664ed49798, type: 3}
 --- !u!1001 &5449353098131516323
@@ -760,6 +765,26 @@ PrefabInstance:
     - target: {fileID: 4857492485065853318, guid: 10d921f0da6836f44976987cbdd0e36e,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7262024139096375603, guid: 10d921f0da6836f44976987cbdd0e36e,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7262024139096375603, guid: 10d921f0da6836f44976987cbdd0e36e,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7262024139096375603, guid: 10d921f0da6836f44976987cbdd0e36e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7262024139096375603, guid: 10d921f0da6836f44976987cbdd0e36e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7474483010351260227, guid: 10d921f0da6836f44976987cbdd0e36e,

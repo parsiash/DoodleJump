@@ -29,9 +29,10 @@ namespace DoodleJump.Gameplay
             _velocity = speed;
         }
 
-        public void Jump(float jumpSpeed)
+        public bool Jump(float jumpSpeed)
         {
             _velocity.y = jumpSpeed;
+            return true;
         }
     }
 }

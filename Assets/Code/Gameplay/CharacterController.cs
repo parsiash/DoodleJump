@@ -98,25 +98,26 @@ namespace DoodleJump.Gameplay
         }
 
 
-        public void Jump()
+        public bool Jump()
         {
-            Jump(jumpSpeed);
+            return Jump(jumpSpeed);
         }
 
         private Animator animator => GetCachedComponentInChildren<Animator>();
-        public void Jump(float jumpSpeed)
+        public bool Jump(float jumpSpeed)
         {
-            _movementController.Jump(jumpSpeed);
-
-            if(!IsRocketAttached)
+            bool jumped = _movementController.Jump(jumpSpeed);
+            if(jumped)
             {
                 animator.SetTrigger("Jump");
             }
+
+            return jumped;
         }
 
-        public void SpringJump()
+        public bool SpringJump()
         {
-            Jump(springJumpSpeed);
+            return Jump(springJumpSpeed);
         }
 
         public void ApplyVelcity(Vector2 velocity)

@@ -38,8 +38,9 @@ namespace DoodleJump.Gameplay
             _timer += dt;
         }
 
-        public void Jump(float jumpSpeed)
+        public bool Jump(float jumpSpeed)
         {
+            return false;
         }
     }
 }
