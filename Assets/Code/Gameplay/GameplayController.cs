@@ -13,6 +13,7 @@ namespace DoodleJump.Gameplay
         private HUD _hud;
         private List<IChunk> _chunks;
         private IChunkSystem _chunkSystem;
+        private IntroAnimationController _introAnimationController;
         private OutroAnimationController _outroAnimationController;
         
         [SerializeField] private Platform platformPrefab;
@@ -45,10 +46,11 @@ namespace DoodleJump.Gameplay
 
         private OutroMenu _outroMenu;
 
-        public void Initialize(IChunkSystem chunkSystem, HUD hud, CharacterController character, PlanetGenerator planetGenerator, OutroAnimationController outroAnimationController, OutroMenu outroMenu)
+        public void Initialize(IChunkSystem chunkSystem, HUD hud, CharacterController character, PlanetGenerator planetGenerator, IntroAnimationController introAnimationController, OutroAnimationController outroAnimationController, OutroMenu outroMenu)
         {
             _character = character;
             _planetGenerator = planetGenerator;
+            _introAnimationController = introAnimationController;
             _outroAnimationController = outroAnimationController;
             _outroMenu = outroMenu;
             _hud = hud;
@@ -128,23 +130,36 @@ namespace DoodleJump.Gameplay
 
         private void ResetGame()
         {
+            ClearGame();
+            _outroAnimationController.Reset();
+            _outroMenu.Hide();
+            _lost = true;
+            _introAnimationController.StartIntroAnimation(() => StartGame());
+        }
+
+        private void ClearGame()
+        {
             if(_world != null)
             {
-                _world.Reset(); 
+                _world.Reset();
+                _world = null;
             }
             ClearChunks();
 
+            _introAnimationController.Reset();
+        }
+
+        private void StartGame()
+        {
+            _lost = false;
             _world = new World(_character, entityFactory, OnLose);
             _world.OnStart();
 
-            //init hud
             _hud.Initialize(_world);
-
             _planetGenerator.Initialize(_world);
 
             _outroAnimationController.Reset();
             _outroMenu.Hide();
-            _lost = false;
         }
 
         //@TODO : refactor this hack by keeping world state and update entities on demand
@@ -158,7 +173,7 @@ namespace DoodleJump.Gameplay
                     _character, 
                     () => _outroMenu.Show(score, ResetGame),
                     () => {
-                        ClearChunks();
+                        ClearGame();
                     }
                 );
             }

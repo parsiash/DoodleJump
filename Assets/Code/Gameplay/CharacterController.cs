@@ -47,6 +47,12 @@ namespace DoodleJump.Gameplay
 
         void Update()
         {
+            //@TODO : this is a hack. world should has its own simulation state
+            if(_world == null)
+            {
+                return;
+            }
+            
             _inputController.Update(Time.deltaTime);
 
             _movementController.Update(Time.deltaTime);
