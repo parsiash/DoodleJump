@@ -43,5 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5830cae1526862d4cbd548adf887aaa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outroAnimationTime: 2
-  cameraMovementSpeed: 10
+  outroAnimationTime: 1.5
+  outroMenuShowTime: 0.7
+  cameraMovementSpeed: 20

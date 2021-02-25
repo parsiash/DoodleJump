@@ -63,6 +63,12 @@ namespace DoodleJump.Gameplay
 
         void Update()
         {
+            //@TODO: these two ifs are absolute hacks, refactor them!
+            if(_lost)
+            {
+                return;
+            }
+
             if(!_character)
             {
                 return;
@@ -148,10 +154,13 @@ namespace DoodleJump.Gameplay
             if(!_lost)
             {
                 _lost = true;
-                _outroAnimationController.StartOutroAnimation(_character, () => {
-                    _outroMenu.Show(score, ResetGame);
-                    ClearChunks();
-                });
+                _outroAnimationController.StartOutroAnimation(
+                    _character, 
+                    () => _outroMenu.Show(score, ResetGame),
+                    () => {
+                        ClearChunks();
+                    }
+                );
             }
         }
     }

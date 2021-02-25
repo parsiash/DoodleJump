@@ -7,17 +7,18 @@ namespace DoodleJump.Gameplay
 {
     public class OutroAnimationController : CommonBehaviour
     {
-        [SerializeField] private float outroAnimationTime = 2f;
-        [SerializeField] private float cameraMovementSpeed = 10f;
+        [SerializeField] private float outroAnimationTime = 1.5f;
+        [SerializeField] private float outroMenuShowTime = 0.7f;
+        [SerializeField] private float cameraMovementSpeed = 20f;
 
         private UniversalCamera universalCamera => UniversalCamera.Instance;
         private Coroutine _outroCoroutine;
 
-        public void StartOutroAnimation(CharacterController character, Action OnFinishCallback)
+        public void StartOutroAnimation(CharacterController character, Action OnShowOutroMenu, Action OnFinishCallback)
         {
             StopOutroAnimation();
 
-            _outroCoroutine = StartCoroutine(OutroAnimation(character, OnFinishCallback));
+            _outroCoroutine = StartCoroutine(OutroAnimation(character, OnShowOutroMenu, OnFinishCallback));
         }
 
         public void Reset()
@@ -34,7 +35,7 @@ namespace DoodleJump.Gameplay
             }
         }
 
-        private IEnumerator OutroAnimation(CharacterController character, Action OnFinishCallback)
+        private IEnumerator OutroAnimation(CharacterController character, Action OnShowOutroMenu, Action OnFinishCallback)
         {
             float timer = 0f;
 
@@ -48,6 +49,14 @@ namespace DoodleJump.Gameplay
 
                 yield return null;
                 timer += Time.deltaTime;
+
+                if(timer >= outroMenuShowTime)
+                {
+                    if(OnShowOutroMenu != null)
+                    {
+                        OnShowOutroMenu();
+                    }
+                }
             }
 
             if(OnFinishCallback != null)
