@@ -106,7 +106,7 @@ namespace DoodleJump.Gameplay
                 _world,
                 Vector2.up * bottomY,
                 10,
-                Mathf.Lerp(0.4f, 1, bottomY / 100f),
+                Mathf.Lerp(1f, 1.5f, bottomY / 100f),
                 Mathf.Lerp(1, 3, bottomY / 100f)
             );
 
