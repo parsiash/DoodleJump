@@ -9,11 +9,13 @@ namespace DoodleJump.UI
     {
         [SerializeField] private Button tryAgainButton;
         [SerializeField] private KeyValueUI scoreUI;
+        [SerializeField] private KeyValueUI highScoreUI;
         private Action OnTryAgainCallback;
 
-        public void Show(int score, Action onTryAgainCallback)
+        public void Show(int score, int highScore, Action onTryAgainCallback)
         {
             scoreUI.SetValue(score);
+            highScoreUI.SetValue(highScore);
 
             SetButtonCallback(tryAgainButton, onTryAgainCallback);
         }

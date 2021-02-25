@@ -16,6 +16,11 @@ namespace DoodleJump
             playerData.HighScore = highScore;
             dataRepository.SavePlayerData(playerData);
         }
+
+        public static PlayerScoreData GetHighScore(this IPlayerDataRepository dataRepository)
+        {
+            return dataRepository.GetPlayerData()?.HighScore;
+        }
     }
 
     public class PlayerDataRepository : Singleton<PlayerDataRepository>, IPlayerDataRepository
