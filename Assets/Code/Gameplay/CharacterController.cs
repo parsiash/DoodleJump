@@ -21,9 +21,6 @@ namespace DoodleJump.Gameplay
         [SerializeField] private AnimationCurve rocketMovementCurve;
         [SerializeField] private float rocketMovementTime;
 
-
-        private const float SCREEN_HALF_WIDTH = 3;
-
         private ICharacterMovementController _movementController;
         public Vector2 Veolicty => Vector2.up * _movementController.Velocity;
         public bool IsRocketAttached =>  _movementController is RocketMovementController;
@@ -81,12 +78,13 @@ namespace DoodleJump.Gameplay
             position += Vector2.right * delta;
 
             //check screen limit
-            if(position.x > SCREEN_HALF_WIDTH)
+            var characterBox = box;
+            if(characterBox.LeftX > _world.RightEdgeX)
             {
-                position.x = -SCREEN_HALF_WIDTH;
-            }else if(position.x < -SCREEN_HALF_WIDTH)
+                position.x = _world.LeftEdgeX - characterBox.Size.x / 2f;
+            }else if(characterBox.RightX < _world.LeftEdgeX)
             {
-                position.x = SCREEN_HALF_WIDTH;
+                position.x = _world.RightEdgeX + characterBox.Size.x / 2f;
             }
 
             Position = position;

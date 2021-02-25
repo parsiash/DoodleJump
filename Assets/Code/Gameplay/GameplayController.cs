@@ -157,6 +157,7 @@ namespace DoodleJump.Gameplay
 
             _hud.Initialize(_world);
             _planetGenerator.Initialize(_world);
+            universalCamera.Initialize(_world);
 
             _outroAnimationController.Reset();
             _outroMenu.Hide();

@@ -65,7 +65,7 @@ namespace DoodleJump.Gameplay.Chunks
                 }
 
 
-                platform.Position = startPosition + Vector2.up * _length + Vector2.right * Random.Range(-2, 2);
+                platform.Position = startPosition + Vector2.up * _length + Vector2.right * Random.Range(_configuration.world.LeftEdgeX + platform.Size.x, _configuration.world.RightEdgeX - platform.Size.x);
                 
                 //add rocket to platform
                 Entity collectible = null;

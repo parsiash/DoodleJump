@@ -22,8 +22,8 @@ namespace DoodleJump.Gameplay
 
     public class World : IWorld
     {
-        public float LeftEdgeX => -2f;
-        public float RightEdgeX => 2f;
+        public float LeftEdgeX => -4f;
+        public float RightEdgeX => 4f;
 
         private CharacterController _character;
         public CharacterController Character => _character;

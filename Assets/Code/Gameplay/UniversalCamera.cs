@@ -57,9 +57,9 @@ namespace DoodleJump.Gameplay
             }
         }
 
-        void Start()
+        public void Initialize(IWorld world)
         {
-            FitSize(new Vector2(6, 10));
+            FitSize(world.RightEdgeX - world.LeftEdgeX);
         }
 
         public void Move(Vector2 delta)
@@ -74,12 +74,11 @@ namespace DoodleJump.Gameplay
             transform.position = position;
         }
 
-        public void FitSize(Vector2 minSize)
+        public void FitSize(float width)
         {
             var camera = UnityCamera;
-
-            var minHeight = Mathf.Max(minSize.y, camera.aspect * minSize.x);
-            camera.orthographicSize = minHeight / 2f;
+            var height = width / camera.aspect;
+            camera.orthographicSize = height / 2f;
 
             DragListener.SetSize(CameraBox.Size);
         }
