@@ -9,6 +9,7 @@ namespace DoodleJump.Gameplay
     public class GameplayController : CommonBehaviour
     {
         private CharacterController _character;
+        private PlanetGenerator _planetGenerator;
         private HUD _hud;
         private List<IChunk> _chunks;
         private IChunkSystem _chunkSystem;
@@ -17,6 +18,8 @@ namespace DoodleJump.Gameplay
         [SerializeField] private MovingPlatform movingPlatformPrefab;
         [SerializeField] private Rocket rocketPrefab;
         [SerializeField] private Spring springPrefab;
+        [SerializeField] private Planet planetPrefab;
+
         private IWorld _world;
 
         private IEntityFactory _entityFactory;
@@ -32,6 +35,7 @@ namespace DoodleJump.Gameplay
                     _entityFactory.AddPrefab<MovingPlatform>(movingPlatformPrefab);
                     _entityFactory.AddPrefab<Rocket>(rocketPrefab);
                     _entityFactory.AddPrefab<Spring>(springPrefab);
+                    _entityFactory.AddPrefab<Planet>(planetPrefab);
                 }
 
                 return _entityFactory;
@@ -40,9 +44,10 @@ namespace DoodleJump.Gameplay
 
         private OutroMenu _outroMenu;
 
-        public void Initialize(IChunkSystem chunkSystem, HUD hud, CharacterController character, OutroMenu outroMenu)
+        public void Initialize(IChunkSystem chunkSystem, HUD hud, CharacterController character, PlanetGenerator planetGenerator, OutroMenu outroMenu)
         {
             _character = character;
+            _planetGenerator = planetGenerator;
             _outroMenu = outroMenu;
             _hud = hud;
 
@@ -127,6 +132,8 @@ namespace DoodleJump.Gameplay
 
             //init hud
             _hud.Initialize(_world);
+
+            _planetGenerator.Initialize(_world);
 
             _outroMenu.Hide();
         }

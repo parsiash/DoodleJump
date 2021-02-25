@@ -49,3 +49,7 @@ MonoBehaviour:
     type: 3}
   rocketPrefab: {fileID: 4412819330729962184, guid: 4313279400552674e92c913e2e3f22bc,
     type: 3}
+  springPrefab: {fileID: 5244009214431216069, guid: 7bde9e4822696eb4a92e4a3bb7cb18b7,
+    type: 3}
+  planetPrefab: {fileID: 6710250352802296871, guid: dff010a6a59fddb488241df67a15e26d,
+    type: 3}

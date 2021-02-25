@@ -24,6 +24,8 @@ namespace DoodleJump.Gameplay
         }
         public Camera UnityCamera => GetCachedComponent<Camera>();
 
+        public Vector2 Position => transform.position;
+
         private DragListenerBox _dragListener;
         public DragListenerBox DragListener
         {
