@@ -126,7 +126,7 @@ namespace DoodleJump.Gameplay
 
         public bool SpringJump()
         {
-            return Jump(springJumpSpeed);
+            return Jump(springJumpSpeed, ANIM_TRIGGER_SPRING_JUMP);
         }
 
         public void ApplyVelcity(Vector2 velocity)
