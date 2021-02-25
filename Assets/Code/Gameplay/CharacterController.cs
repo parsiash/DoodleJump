@@ -10,6 +10,7 @@ namespace DoodleJump.Gameplay
     /// </summary>
     public class CharacterController : Entity
     {
+
         [Header("Default Movement")]
         [SerializeField] private int jumpSpeed = 12;
         [SerializeField] private int springJumpSpeed = 30;
@@ -21,16 +22,23 @@ namespace DoodleJump.Gameplay
         [SerializeField] private AnimationCurve rocketMovementCurve;
         [SerializeField] private float rocketMovementTime;
 
+        //movement
         private ICharacterMovementController _movementController;
         public Vector2 Veolicty => Vector2.up * _movementController.Velocity;
         public bool IsRocketAttached =>  _movementController is RocketMovementController;
+        [SerializeField] private GameObject attackedRocket;
 
+        //animation
+        private const string ANIM_TRIGGER_JUMP = "Jump";
+        private const string ANIM_TRIGGER_SPRING_JUMP = "SpringJump";
+        private Animator animator => GetCachedComponentInChildren<Animator>();
+
+        //camera
         private UniversalCamera universalCamera => UniversalCamera.Instance;
         private Camera mainCamera => UniversalCamera.Instance.UnityCamera;
 
+        //input
         private CharacterInputController _inputController;
-
-        [SerializeField] private GameObject attackedRocket;
 
         public override void Init(IWorld world)
         {
@@ -105,13 +113,12 @@ namespace DoodleJump.Gameplay
             return Jump(jumpSpeed);
         }
 
-        private Animator animator => GetCachedComponentInChildren<Animator>();
-        public bool Jump(float jumpSpeed)
+        public bool Jump(float jumpSpeed, string animationTrigger = ANIM_TRIGGER_JUMP)
         {
             bool jumped = _movementController.Jump(jumpSpeed);
             if(jumped)
             {
-                animator.SetTrigger("Jump");
+                animator.SetTrigger(animationTrigger);
             }
 
             return jumped;
@@ -147,7 +154,7 @@ namespace DoodleJump.Gameplay
                         Jump();
                     }
                     break;
-                    
+
                 case "Spring":
                 case "Collectible":
                     var collectible = otherCollider.GetComponentInParent<ICollectible>();

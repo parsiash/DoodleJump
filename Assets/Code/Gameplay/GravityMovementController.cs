@@ -31,8 +31,13 @@ namespace DoodleJump.Gameplay
 
         public bool Jump(float jumpSpeed)
         {
-            _velocity.y = jumpSpeed;
-            return true;
+            if(jumpSpeed > _velocity.y)
+            {
+                _velocity.y = jumpSpeed;
+                return true;
+            }
+
+            return false;
         }
     }
 }
