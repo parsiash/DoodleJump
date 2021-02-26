@@ -3,6 +3,10 @@ using DoodleJump.Common;
 
 namespace DoodleJump.Gameplay.Chunks
 {
+    /// <summary>
+    /// The abstraction for chunk. 
+    /// Each chunk is a portion of environment, generated dynamically at runtime.
+    /// </summary>
     public interface IChunk
     {
         IWorld World { get; }
