@@ -22,7 +22,7 @@ namespace DoodleJump.UI
         {
             if(_world != null)
             {
-                _scoreText.text = _world.Score.ToString();
+                _scoreText.text = $"{_world.Score} / {_world.JumpedPlatformCount}";
             }
         }
     }

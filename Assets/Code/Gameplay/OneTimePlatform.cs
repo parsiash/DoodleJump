@@ -3,7 +3,6 @@
     public class OneTimePlatform : Platform
     {
         private bool _used;
-
         public override void Init(IWorld world)
         {
             base.Init(world);

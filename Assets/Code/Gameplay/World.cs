@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DoodleJump.Common;
 using UnityEngine;
 
@@ -21,6 +22,15 @@ namespace DoodleJump.Gameplay
 
         void OnLose();
         int Score { get; }
+        int JumpedPlatformCount { get; }
+
+        //events
+        void AddEventListener(IWorldEventListener eventListener);
+        void OnPlatformJumpFirstTime(Platform platform);
+    }
+
+    public interface IWorldEventListener
+    {
     }
 
     public class World : IWorld
@@ -39,6 +49,8 @@ namespace DoodleJump.Gameplay
         private IChunkSystem _chunkSystem;
         public IChunkSystem ChunkSystem => _chunkSystem;
 
+        private List<IWorldEventListener> _eventListeners;
+
         private int _score;
         public int Score
         {
@@ -55,6 +67,9 @@ namespace DoodleJump.Gameplay
             }
         }
 
+        private int _jumpedPlatformCount;
+        public int JumpedPlatformCount => _jumpedPlatformCount;
+
         private Action<int> OnLoseCallback;
 
         public World(CharacterController character, IEntityFactory entityFactory, Action<int> onLoseCallback)
@@ -63,6 +78,7 @@ namespace DoodleJump.Gameplay
             _entityFactory = entityFactory;
 
             _chunkSystem = new ChunkSystem(this);
+            _eventListeners = new List<IWorldEventListener>();
 
             OnLoseCallback = onLoseCallback;
         }
@@ -81,12 +97,34 @@ namespace DoodleJump.Gameplay
         {
             _character.Reset();
             _chunkSystem.Clear();
-
+            _eventListeners.Clear();
         }
 
         public void OnLose()
         {
             OnLoseCallback(Score);
         }
+
+        public void AddEventListener(IWorldEventListener eventListener)
+        {
+            _eventListeners.Add(eventListener);
+        }
+
+        public void OnPlatformJumpFirstTime(Platform platform)
+        {
+            _jumpedPlatformCount++;
+        }
+
+        private void RaiseWorldEvent(Action<IWorldEventListener> eventCallback)
+        {
+            foreach(var eventListener in _eventListeners)
+            {
+                if(eventListener != null)
+                {
+                    eventCallback(eventListener);
+                }
+            }
+        }
+
     }
 }
