@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f564ade4b420164f82ac2a057fc4488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxSize: {x: 8, y: 10}
+  boxSize: {x: 8, y: 8.31}
   boxOffset: {x: 0, y: 0}
   chunkName: ReactiveChunk
 --- !u!1001 &1144329137535166155
@@ -70,7 +70,7 @@ PrefabInstance:
     - target: {fileID: 8050742378472200075, guid: 0e9b3fefc10572d4683d5830b16cb890,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.41
+      value: -3.5700002
       objectReference: {fileID: 0}
     - target: {fileID: 8050742378472200075, guid: 0e9b3fefc10572d4683d5830b16cb890,
         type: 3}
@@ -145,7 +145,7 @@ PrefabInstance:
     - target: {fileID: 8050742378472200075, guid: 0e9b3fefc10572d4683d5830b16cb890,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.02
+      value: 3.8600001
       objectReference: {fileID: 0}
     - target: {fileID: 8050742378472200075, guid: 0e9b3fefc10572d4683d5830b16cb890,
         type: 3}
@@ -215,12 +215,12 @@ PrefabInstance:
     - target: {fileID: 8050742378472200075, guid: 0e9b3fefc10572d4683d5830b16cb890,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.49
+      value: -2.36
       objectReference: {fileID: 0}
     - target: {fileID: 8050742378472200075, guid: 0e9b3fefc10572d4683d5830b16cb890,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.41
+      value: -1.24
       objectReference: {fileID: 0}
     - target: {fileID: 8050742378472200075, guid: 0e9b3fefc10572d4683d5830b16cb890,
         type: 3}
@@ -295,7 +295,7 @@ PrefabInstance:
     - target: {fileID: 8050742378472200075, guid: 0e9b3fefc10572d4683d5830b16cb890,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.62
+      value: 1.46
       objectReference: {fileID: 0}
     - target: {fileID: 8050742378472200075, guid: 0e9b3fefc10572d4683d5830b16cb890,
         type: 3}
