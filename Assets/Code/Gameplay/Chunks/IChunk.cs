@@ -7,11 +7,12 @@ namespace DoodleJump.Gameplay.Chunks
     {
         float Length { get; }
         Box BoundingBox { get; }
-        void Initialize();
-        void Dispose();
-        bool IsActive { get; }
         IEnumerable<IEntity> Entities { get; }
-        void Update();
+        
+        bool IsActive { get; }
+
+        void OnUpdate();
+        void Dispose();
     }
 
     public interface IPlatformChunk : IChunk

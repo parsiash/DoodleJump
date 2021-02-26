@@ -4,17 +4,25 @@ namespace DoodleJump.Gameplay
 {
     public class MovingPlatform : Platform
     {
-        private Vector2 source => new Vector2(_world.LeftEdgeX, _initialPosition.y);
-        private Vector2 destination =>  new Vector2(_world.RightEdgeX, _initialPosition.y);
-        private Vector2 _initialPosition;
-        private float _timeOffset;
-        [SerializeField] private float speed;
+        protected Vector2 source { get; set; }
+        protected Vector2 destination { get; set; } 
+        protected Vector2 _initialPosition;
+        protected float _timeOffset;
+        [SerializeField] protected float speed;
 
         public override void Init(IWorld world)
         {
             base.Init(world);
             _initialPosition = transform.position;
             _timeOffset = Random.value;
+
+            InitSourceAndDestination();
+        }
+
+        protected virtual void InitSourceAndDestination()
+        {
+            source = new Vector2(_world.LeftEdgeX + box.Size.x / 2f, _initialPosition.y);
+            destination = new Vector2(_world.RightEdgeX - box.Size.x / 2f, _initialPosition.y);
         }
 
         void Update()

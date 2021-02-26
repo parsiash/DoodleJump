@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using DoodleJump.Common;
-using DoodleJump.Gameplay.Chunks;
 using DoodleJump.UI;
 using UnityEngine;
 
@@ -11,7 +9,6 @@ namespace DoodleJump.Gameplay
         private CharacterController _character;
         private PlanetGenerator _planetGenerator;
         private HUD _hud;
-        private List<IChunk> _chunks;
         private IChunkSystem _chunkSystem;
         private IntroAnimationController _introAnimationController;
         private OutroAnimationController _outroAnimationController;
@@ -63,8 +60,6 @@ namespace DoodleJump.Gameplay
             _outroMenu = outroMenu;
             _hud = hud;
 
-            _chunks = new List<IChunk>();
-
             ResetGame();
         }
 
@@ -84,56 +79,7 @@ namespace DoodleJump.Gameplay
                 return;
             }
 
-            var characterPosiiton = _character.Position;
-
-            var cameraBox = universalCamera.CameraBox;
-            float topY = cameraBox.BottomY;
-
-            foreach(var chunk in _chunks)
-            {
-                chunk.Update();
-
-                if(chunk.IsActive)
-                {
-                    topY = Mathf.Max(chunk.BoundingBox.TopY, topY);
-                }
-            }
-            _chunks.RemoveAll(chunk => !chunk.IsActive);
-
-            //create new chunk on top
-            if(cameraBox.TopY > topY - 1)
-            {
-                var chunk = CreateChunk(topY, 10);
-                _chunks.Add(chunk);
-            }
-        }
-
-        IChunk CreateChunk(float bottomY, float length)
-        {
-            var configuration = new SimplePlatformChunk.Configuration(
-                _world,
-                Vector2.up * bottomY,
-                10,
-                Mathf.Lerp(1f, 1.5f, bottomY / 100f),
-                Mathf.Lerp(1, 3, bottomY / 100f)
-            );
-
-            var chunk = new SimplePlatformChunk(configuration);
-            chunk.Initialize();
-            return chunk;
-        }
-        
-        private void ClearChunks()
-        {
-            foreach(var chunk in _chunks)
-            {
-                if(chunk != null)
-                {
-                    chunk.Dispose();
-                }
-            }
-
-            _chunks.Clear();
+            _world.OnUpdate();
         }
 
         private void ResetGame()
@@ -152,7 +98,6 @@ namespace DoodleJump.Gameplay
                 _world.Reset();
                 _world = null;
             }
-            ClearChunks();
 
             _introAnimationController.Reset();
         }
@@ -187,10 +132,5 @@ namespace DoodleJump.Gameplay
                 );
             }
         }
-    }
-
-    public interface IChunkSystem
-    {
-        IChunk CreateChunk(float bottomY, float length);
     }
 }

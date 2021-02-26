@@ -11,10 +11,13 @@ namespace DoodleJump.Gameplay
         CharacterController Character { get; }
 
         void OnStart();
+        void OnUpdate();
         void Reset();
 
         IEntityFactory EntityFactory { get; }
         DoodleJump.Common.ILogger Logger { get; }
+
+        IChunkSystem ChunkSystem { get; }
 
         void OnLose();
         int Score { get; }
@@ -32,6 +35,9 @@ namespace DoodleJump.Gameplay
 
         private IEntityFactory _entityFactory;
         public IEntityFactory EntityFactory => _entityFactory;
+
+        private IChunkSystem _chunkSystem;
+        public IChunkSystem ChunkSystem => _chunkSystem;
 
         private int _score;
         public int Score
@@ -53,10 +59,17 @@ namespace DoodleJump.Gameplay
 
         public World(CharacterController character, IEntityFactory entityFactory, Action<int> onLoseCallback)
         {
-            _entityFactory = entityFactory;
             _character = character;
+            _entityFactory = entityFactory;
+
+            _chunkSystem = new ChunkSystem(this);
 
             OnLoseCallback = onLoseCallback;
+        }
+
+        public void OnUpdate()
+        {
+            _chunkSystem.OnUpdate();
         }
 
         public void OnStart()
@@ -67,6 +80,8 @@ namespace DoodleJump.Gameplay
         public void Reset()
         {
             _character.Reset();
+            _chunkSystem.Clear();
+
         }
 
         public void OnLose()
