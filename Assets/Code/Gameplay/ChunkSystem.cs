@@ -36,6 +36,18 @@ namespace DoodleJump.Gameplay
         {
             _world = world;
             _chunks = new List<IChunk>();
+
+            CreatePrefabChunk("InitialChunk", -5f);
+        }
+
+        private PrefabChunk CreatePrefabChunk(string chunkName, float bottomY)
+        {
+            var prefabChunk = _world.EntityFactory.CreateEntity<PrefabChunk>(chunkName);
+            prefabChunk.Position = Vector2.up * (bottomY + prefabChunk.Size.y * 0.5f);
+            prefabChunk.Init(_world);
+            _chunks.Add(prefabChunk);
+
+            return prefabChunk;
         }
 
         public void OnUpdate()
@@ -63,9 +75,7 @@ namespace DoodleJump.Gameplay
                 {
                     if(Random.value < verticalMovingChunkChance)
                     {
-                        var prefabChunk = _world.EntityFactory.CreateEntity<PrefabChunk>("MovingPlatformChunk");
-                        prefabChunk.Position = Vector2.up * (topY + prefabChunk.Size.y * 0.5f);
-                        prefabChunk.Init(_world);
+                        var prefabChunk = CreatePrefabChunk("MovingPlatformChunk", topY);
                         chunk = prefabChunk;
 
                         _lastVerticalMovingChunkY = topY;
@@ -77,19 +87,17 @@ namespace DoodleJump.Gameplay
                 {
                     chunk = CreateSimpleChunk(topY, 10);
                 }
-
-                _chunks.Add(chunk);
             }
         }
 
         private float GetMinVerticalInterval(float bottomY)
         {
-            return Mathf.Lerp(1f, 1.5f, bottomY / 100f);
+            return Mathf.Lerp(1f, 1.5f, bottomY / 400f);
         }
 
         private float GetMaxVerticalInterval(float bottomY)
         {
-            return Mathf.Lerp(1, 3, bottomY / 100f);
+            return Mathf.Lerp(1, 3, bottomY / 400f);
         }
 
         IChunk CreateSimpleChunk(float bottomY, float length)
@@ -130,6 +138,8 @@ namespace DoodleJump.Gameplay
                     }
                 }
             }
+
+            _chunks.Add(chunk);
             return chunk;
         }
 

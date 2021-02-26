@@ -61,3 +61,4 @@ MonoBehaviour:
     type: 3}
   prefabChunks:
   - {fileID: 6105055065360290371, guid: c2e43d3eaa6472342bf44bc46f6384e5, type: 3}
+  - {fileID: 1692896785607576304, guid: 5c511061c42f3c64b9abb280fc2c105c, type: 3}
