@@ -43,7 +43,8 @@ namespace DoodleJump.Common
         private static void SetInstance(T argInstance)
         {
             //first delete all other instances (if there are any)
-            var instances = Resources.FindObjectsOfTypeAll<T>();
+            var instanceObjects = Object.FindObjectsOfType(typeof(T), true);
+            var instances = instanceObjects.Where(io => io != null).Select(io => io as T);
             foreach(var inst in instances)
             {
                 if(inst && inst != argInstance)
