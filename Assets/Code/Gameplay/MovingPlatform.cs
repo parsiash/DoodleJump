@@ -8,7 +8,7 @@ namespace DoodleJump.Gameplay
         protected Vector2 destination { get; set; } 
         protected Vector2 _initialPosition;
         protected float _timeOffset;
-        [SerializeField] protected float speed;
+        [SerializeField] protected float speed = 0.7f;
 
         public override void Init(IWorld world)
         {

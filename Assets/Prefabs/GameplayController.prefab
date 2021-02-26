@@ -59,3 +59,5 @@ MonoBehaviour:
     type: 3}
   fallingRocketPrefab: {fileID: -2719255636323730856, guid: 3478104a2a561bd4ca3e530dbe271a0b,
     type: 3}
+  prefabChunks:
+  - {fileID: 6105055065360290371, guid: c2e43d3eaa6472342bf44bc46f6384e5, type: 3}

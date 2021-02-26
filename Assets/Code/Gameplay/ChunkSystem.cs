@@ -32,10 +32,9 @@ namespace DoodleJump.Gameplay
 
             foreach(var chunk in _chunks)
             {
-                chunk.OnUpdate();
-
-                if(chunk.IsActive)
+                if(chunk != null && chunk.IsActive)
                 {
+                    chunk.OnUpdate();
                     topY = Mathf.Max(chunk.BoundingBox.TopY, topY);
                 }
             }
@@ -44,16 +43,30 @@ namespace DoodleJump.Gameplay
             //create new chunk on top
             if(cameraBox.TopY > topY - 1)
             {
-                var chunk = CreateChunk(topY, 10);
+                IChunk chunk = null;
+                if(topY - _lastVerticalMovingChunkY > 150)
+                {
+                    if(Random.value < 0.2f)
+                    {
+                        var prefabChunk = _world.EntityFactory.CreateEntity<PrefabChunk>("MovingPlatformChunk");
+                        prefabChunk.Position = Vector2.up * (topY + prefabChunk.Size.y * 0.5f);
+                        prefabChunk.Init(_world);
+                        chunk = prefabChunk;
+
+                        _lastVerticalMovingChunkY = topY;
+                    }
+                }
+
+                if(chunk == null)
+                {
+                    chunk = CreateSimpleChunk(topY, 10);
+                }
+
                 _chunks.Add(chunk);
-                // if(Random.value < 0.5)
-                // {
-                // }else
-                // {
-                //     _world.Logger.Log("Create Vertical Chunk");
-                // }
             }
         }
+
+        private float _lastVerticalMovingChunkY;
 
         private float GetMinVerticalInterval(float bottomY)
         {
@@ -75,7 +88,7 @@ namespace DoodleJump.Gameplay
 
         private IEntityFactory entityFactory => _world.EntityFactory;
 
-        IChunk CreateChunk(float bottomY, float length)
+        IChunk CreateSimpleChunk(float bottomY, float length)
         {
             var minInterval = GetMinVerticalInterval(bottomY);
             var maxInterval = GetMaxVerticalInterval(bottomY);
@@ -85,45 +98,25 @@ namespace DoodleJump.Gameplay
             for(int i = 0; i < 10; i++)
             {
                 //add rocket to platform
-                Entity collectible = null;
-                if(Random.value < springChance)
-                {
-                    collectible = entityFactory.CreateEntity<Spring>();
-                }else if(Random.value < rocketChance)
-                {
-                    collectible = entityFactory.CreateEntity<Rocket>();
-                }
+                var collectible = CreateRandomCollectible();
 
                 var intervalY = Random.Range(minInterval, maxInterval);
                 var platformBottomEdgeY = chunk.BoundingBox.TopY + intervalY;
 
-                Platform platform = null;
-                if(Random.value > movingPlatformChance)
-                {
-                    platform = CreatePlatform<MovingPlatform>(platformBottomEdgeY, collectible);
-                }else
-                {
-                    if(bottomY > oneTimePlatformMinY && Random.value > oneTimePlatformChance)
-                    {
-                        platform = CreatePlatform<OneTimePlatform>(platformBottomEdgeY, collectible);
-                    }else
-                    {
-                        platform = CreatePlatform<Platform>(platformBottomEdgeY, collectible);
-                    }
-                }
+                var platform = CreateRandomPlatform(bottomY, collectible, platformBottomEdgeY);
 
                 chunk.AddEntity(platform);
-                if(collectible)
+                if (collectible)
                 {
                     chunk.AddEntity(collectible);
                 }
 
-                if(platform.GetType() == typeof(Platform))
+                if (platform.GetType() == typeof(Platform))
                 {
-                    if(Random.value < destroyablePlatformChance)
+                    if (Random.value < destroyablePlatformChance)
                     {
                         var platformBox = platform.box;
-                        if(platformBox.RightX < _world.RightEdgeX - platformBox.Size.x * 1.5f)
+                        if (platformBox.RightX < _world.RightEdgeX - platformBox.Size.x * 1.5f)
                         {
                             var destroyablePlatform = entityFactory.CreateEntity<DestroyablePlatform>();
                             destroyablePlatform.Position = new Vector2(Random.Range(platformBox.RightX + platformBox.Size.x * destroyablePlatformMarginFactor, _world.RightEdgeX - platformBox.Size.x * 0.75f), platform.Position.y);
@@ -134,6 +127,43 @@ namespace DoodleJump.Gameplay
                 }
             }
             return chunk;
+        }
+
+        private Entity CreateRandomCollectible()
+        {
+            Entity collectible = null;
+            if (Random.value < springChance)
+            {
+                collectible = entityFactory.CreateEntity<Spring>();
+            }
+            else if (Random.value < rocketChance)
+            {
+                collectible = entityFactory.CreateEntity<Rocket>();
+            }
+
+            return collectible;
+        }
+
+        private Platform CreateRandomPlatform(float bottomY, Entity collectible, float platformBottomEdgeY)
+        {
+            Platform platform;
+            if (Random.value > movingPlatformChance)
+            {
+                platform = CreatePlatform<MovingPlatform>(platformBottomEdgeY, collectible);
+            }
+            else
+            {
+                if (bottomY > oneTimePlatformMinY && Random.value > oneTimePlatformChance)
+                {
+                    platform = CreatePlatform<OneTimePlatform>(platformBottomEdgeY, collectible);
+                }
+                else
+                {
+                    platform = CreatePlatform<Platform>(platformBottomEdgeY, collectible);
+                }
+            }
+
+            return platform;
         }
 
         private T CreatePlatform<T>(float platformBottomEdgeY, Entity placedEntity = null) where T : Platform

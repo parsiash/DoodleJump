@@ -21,6 +21,7 @@ namespace DoodleJump.Gameplay
         [SerializeField] private Spring springPrefab;
         [SerializeField] private Planet planetPrefab;
         [SerializeField] private FallingRocket fallingRocketPrefab;
+        [SerializeField] private PrefabChunk[] prefabChunks;
 
         private IWorld _world;
 
@@ -43,6 +44,14 @@ namespace DoodleJump.Gameplay
                     _entityFactory.AddPrefab<FallingRocket>(fallingRocketPrefab);
 
                     _entityFactory.AddPrefab<Planet>(planetPrefab);
+
+                    foreach(var prefabChunk in prefabChunks)
+                    {
+                        if(prefabChunk)
+                        {
+                            _entityFactory.AddPrefab(prefabChunk.ChunkName, prefabChunk);
+                        }
+                    }
                 }
 
                 return _entityFactory;
