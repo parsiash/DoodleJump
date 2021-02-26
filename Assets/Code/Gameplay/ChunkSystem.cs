@@ -16,6 +16,21 @@ namespace DoodleJump.Gameplay
         private IWorld _world;
         private List<IChunk> _chunks;
         private UniversalCamera universalCamera => UniversalCamera.Instance;
+        private float _lastVerticalMovingChunkY;
+
+        private IEntityFactory entityFactory => _world.EntityFactory;
+
+        private const float oneTimePlatformMinY = 150f;
+        private const float oneTimePlatformChance = 0.8f;
+        private const float springChance = 0.4f;
+        private const float rocketChance = 0.2f;
+        private const float movingPlatformChance = 0.9f;
+        private const float destroyablePlatformChance = 0.2f;
+        private const float destroyablePlatformMarginFactor = 0.75f;
+        private const float verticalMovingChunkChance = 0.5f;
+        private const int verticalMovingChunkInterval = 150;
+        private const float rocketSpawnInterval = 100f;
+        private const float springSpawnInterval = 20f;
 
         public ChunkSystem(IWorld world)
         {
@@ -44,9 +59,9 @@ namespace DoodleJump.Gameplay
             if(cameraBox.TopY > topY - 1)
             {
                 IChunk chunk = null;
-                if(topY - _lastVerticalMovingChunkY > 150)
+                if(topY - _lastVerticalMovingChunkY > verticalMovingChunkInterval)
                 {
-                    if(Random.value < 0.2f)
+                    if(Random.value < verticalMovingChunkChance)
                     {
                         var prefabChunk = _world.EntityFactory.CreateEntity<PrefabChunk>("MovingPlatformChunk");
                         prefabChunk.Position = Vector2.up * (topY + prefabChunk.Size.y * 0.5f);
@@ -57,6 +72,7 @@ namespace DoodleJump.Gameplay
                     }
                 }
 
+                //create simple if non other chunk type is created
                 if(chunk == null)
                 {
                     chunk = CreateSimpleChunk(topY, 10);
@@ -65,8 +81,6 @@ namespace DoodleJump.Gameplay
                 _chunks.Add(chunk);
             }
         }
-
-        private float _lastVerticalMovingChunkY;
 
         private float GetMinVerticalInterval(float bottomY)
         {
@@ -78,16 +92,6 @@ namespace DoodleJump.Gameplay
             return Mathf.Lerp(1, 3, bottomY / 100f);
         }
 
-        private const float oneTimePlatformMinY = 150f;
-        private const float oneTimePlatformChance = 0.8f;
-        private const float springChance = 0.1f;
-        private const float rocketChance = 0.05f;
-        private const float movingPlatformChance = 0.9f;
-        private const float destroyablePlatformChance = 0.2f;
-        private const float destroyablePlatformMarginFactor = 0.75f;
-
-        private IEntityFactory entityFactory => _world.EntityFactory;
-
         IChunk CreateSimpleChunk(float bottomY, float length)
         {
             var minInterval = GetMinVerticalInterval(bottomY);
@@ -98,7 +102,7 @@ namespace DoodleJump.Gameplay
             for(int i = 0; i < 10; i++)
             {
                 //add rocket to platform
-                var collectible = CreateRandomCollectible();
+                var collectible = CreateRandomCollectible(bottomY);
 
                 var intervalY = Random.Range(minInterval, maxInterval);
                 var platformBottomEdgeY = chunk.BoundingBox.TopY + intervalY;
@@ -129,16 +133,21 @@ namespace DoodleJump.Gameplay
             return chunk;
         }
 
-        private Entity CreateRandomCollectible()
+        private float _lastRocketY;
+        private float _lastSpringY;
+
+        private Entity CreateRandomCollectible(float y)
         {
             Entity collectible = null;
-            if (Random.value < springChance)
+            if (Random.value < springChance && y - _lastSpringY > springSpawnInterval)
             {
                 collectible = entityFactory.CreateEntity<Spring>();
+                _lastSpringY = y;
             }
-            else if (Random.value < rocketChance)
+            else if (Random.value < rocketChance && y - _lastRocketY > rocketSpawnInterval)
             {
                 collectible = entityFactory.CreateEntity<Rocket>();
+                _lastRocketY = y;
             }
 
             return collectible;
