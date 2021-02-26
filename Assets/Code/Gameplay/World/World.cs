@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DoodleJump.Common;
 using UnityEngine;
 
@@ -156,6 +157,7 @@ namespace DoodleJump.Gameplay
         public void RemoveEntity(IEntity entity)
         {
             _entities.Remove(entity);
+            _createdEntities.Remove(entity);
         }
 
 

@@ -31,15 +31,14 @@ namespace DoodleJump.Gameplay
         }
         public IEnumerable<IEntity> Entities => entities;
 
-        public override void Init(IWorld world)
-        {
-            base.Init(world);
 
+        public virtual void InitializeEntities()
+        {
             foreach(var entity in entities)
             {
                 if(entity)
                 {
-                    world.AddEntity(entity);
+                    _world.AddEntity(entity);
                     entity.SetActive(true);
                 }
             }

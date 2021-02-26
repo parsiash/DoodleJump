@@ -40,7 +40,8 @@ namespace DoodleJump.Gameplay
         {
             var prefabChunk = _world.EntityFactory.CreateEntity<PrefabChunk>(chunkName);
             prefabChunk.Position = Vector2.up * (bottomY + prefabChunk.Size.y * 0.5f);
-            prefabChunk.Init(_world);
+            
+            prefabChunk.InitializeEntities();
             _chunks.Add(prefabChunk);
 
             return prefabChunk;
