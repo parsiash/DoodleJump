@@ -89,7 +89,7 @@ namespace DoodleJump.Gameplay
                 var planetPosition = new Vector2(Random.Range(-3, 3), Random.Range(startY, endY));
 
                 Color baseColor = planetColors[Random.Range(0, planetColors.Length)];
-                baseColor = Color.HSVToRGB(Random.value, Random.Range(0f, 0.3f), Random.Range(0.05f, 0.15f));
+                baseColor = Color.HSVToRGB(Random.value, Random.Range(0f, 0.3f), Random.Range(0.1f, 0.2f));
                 var secondColor = baseColor * 0.5f;
                 secondColor.a = 1f;
 

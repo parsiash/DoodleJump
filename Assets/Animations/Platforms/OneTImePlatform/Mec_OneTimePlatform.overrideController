@@ -9,7 +9,7 @@ AnimatorOverrideController:
   m_Name: Mec_OneTimePlatform
   m_Controller: {fileID: 9100000, guid: 12e553895e9dbc048b01ffdfdc2fa778, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: c1ec4bb41f4a5e84988090b9fd60ab23, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 0850bcd536b83ec41a70276a8276d65f, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 203418bec0db64b44a9a132c08a1f99b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 0da7a8c08fb062749985c1e95238a87b, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 0049875a873b92a4ebf1b5f29041d1d4, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 77e45b6fa2ed98a45882dd9bb6dd3d41, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 0850bcd536b83ec41a70276a8276d65f, type: 2}

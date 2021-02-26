@@ -38,24 +38,24 @@ namespace DoodleJump.Gameplay
             }
         }
 
-        private DragListenerBox _dragListener;
-        public DragListenerBox DragListener
-        {
-            get
-            {
-                if(!_dragListener)
-                {
-                    _dragListener = AddChildWithComponent<DragListenerBox>();
+        // private DragListenerBox _dragListener;
+        // public DragListenerBox DragListener
+        // {
+        //     get
+        //     {
+        //         if(!_dragListener)
+        //         {
+        //             _dragListener = AddChildWithComponent<DragListenerBox>();
 
-                    if(!GetComponent<Physics2DRaycaster>())
-                    {
-                        gameObject.AddComponent<Physics2DRaycaster>();
-                    }
-                }
+        //             if(!GetComponent<Physics2DRaycaster>())
+        //             {
+        //                 gameObject.AddComponent<Physics2DRaycaster>();
+        //             }
+        //         }
 
-                return _dragListener;
-            }
-        }
+        //         return _dragListener;
+        //     }
+        // }
 
         public void Initialize(IWorld world)
         {
@@ -80,7 +80,7 @@ namespace DoodleJump.Gameplay
             var height = width / camera.aspect;
             camera.orthographicSize = height / 2f;
 
-            DragListener.SetSize(CameraBox.Size);
+            // DragListener.SetSize(CameraBox.Size);
         }
     }
 }

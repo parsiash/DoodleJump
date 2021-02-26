@@ -16,7 +16,6 @@ namespace DoodleJump.Gameplay
         [SerializeField] private int springJumpSpeed = 30;
         [SerializeField] private float accelerationY = -20;
         [SerializeField] private float moveSpeedX = 8;
-        [SerializeField] private float dragFactor = 2;
 
         [Header("Rocket")]
         [SerializeField] private AnimationCurve rocketMovementCurve;
@@ -48,7 +47,7 @@ namespace DoodleJump.Gameplay
             universalCamera.SetY(0);
 
             _movementController = new GravityMovementController(this, Vector2.zero, accelerationY);
-            _inputController = new CharacterInputController(this, UniversalCamera.Instance.DragListener, dragFactor);
+            _inputController = new CharacterInputController(this, moveSpeedX);
         }
 
 

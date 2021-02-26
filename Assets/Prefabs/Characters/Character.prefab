@@ -184,11 +184,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142c61178c96a0c45bd94c6040fd51c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxSize: {x: 1, y: 1}
+  boxOffset: {x: 0, y: 0}
   jumpSpeed: 12
   springJumpSpeed: 20
   accelerationY: -20
-  moveSpeedX: 8
+  moveSpeedX: 15
   dragFactor: 7
+  rocketMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rocketMovementTime: 0
+  attackedRocket: {fileID: 0}
 --- !u!50 &1391858462
 Rigidbody2D:
   serializedVersion: 4
