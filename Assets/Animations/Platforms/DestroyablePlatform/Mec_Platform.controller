@@ -8,7 +8,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Hit
-  m_Speed: 1
+  m_Speed: 0.3
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: c1ec4bb41f4a5e84988090b9fd60ab23, type: 2}
+  m_Motion: {fileID: 7400000, guid: 77e45b6fa2ed98a45882dd9bb6dd3d41, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -46,7 +46,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 203418bec0db64b44a9a132c08a1f99b, type: 2}
+  m_Motion: {fileID: 7400000, guid: 0da7a8c08fb062749985c1e95238a87b, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -63,7 +63,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -5748252210003206256}
-    m_Position: {x: 290, y: 150, z: 0}
+    m_Position: {x: 300, y: 150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3862833024049318067}
     m_Position: {x: 290, y: 80, z: 0}
