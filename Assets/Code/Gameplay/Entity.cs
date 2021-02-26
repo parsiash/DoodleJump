@@ -15,6 +15,9 @@ namespace DoodleJump.Gameplay
         Vector2 Size { get; }
 
         void Init(IWorld world);
+        void OnUpdate(float dt);
+        bool IsDestroyed { get; }
+        void Destroy();
         void Reset();
     }
 
@@ -41,6 +44,7 @@ namespace DoodleJump.Gameplay
     {
         protected IWorld _world;
         public IWorld World => _world;
+        public bool IsDestroyed { get; private set; }
 
         public virtual Vector2 Position 
         { 
@@ -97,11 +101,27 @@ namespace DoodleJump.Gameplay
         public virtual void Init(IWorld world)
         {
             _world = world;
+            IsDestroyed = false;
         }
 
         public virtual void Reset()
         {
             _world = null;
+        }
+
+        public virtual void OnUpdate(float dt)
+        {
+        }
+
+        public override void Destroy()
+        {
+            if(World == null)
+            {
+                base.Destroy();
+                return;
+            }
+            
+            IsDestroyed = true;
         }
     }
 }

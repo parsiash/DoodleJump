@@ -43,6 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c915e7a56ed618942a0a0e62546aed2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterPrefab: {fileID: 6488294049089770321, guid: 6cb93f9952b21fa4aa92384b94cb0efa,
+    type: 3}
   platformPrefab: {fileID: 8532493330893767331, guid: 393d6f4cec3db3647aace9b14736703b,
     type: 3}
   movingPlatformPrefab: {fileID: 5150755666725220761, guid: dc354482a8980174a8ec221fb1e29b0e,

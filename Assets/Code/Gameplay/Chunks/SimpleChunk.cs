@@ -6,6 +6,8 @@ namespace DoodleJump.Gameplay.Chunks
 {
     public class SimpleChunk : IPlatformChunk
     {
+        public IWorld World { get; private set; }
+
         private Vector2 _startPosition;
         private float _length;
         public float Length => _length;
@@ -16,9 +18,12 @@ namespace DoodleJump.Gameplay.Chunks
 
         private bool _isDisposed;
         public bool IsActive => !_isDisposed;
-        
-        public SimpleChunk(Vector2 startPosition)
+
+
+        public SimpleChunk(IWorld world, Vector2 startPosition)
         {
+            World = world;
+
             _startPosition = startPosition;
             _length = 0f;
 

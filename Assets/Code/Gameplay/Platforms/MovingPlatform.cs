@@ -25,8 +25,10 @@ namespace DoodleJump.Gameplay
             destination = new Vector2(_world.RightEdgeX - box.Size.x / 2f, _initialPosition.y);
         }
 
-        void Update()
+        public override void OnUpdate(float dt)
         {
+            base.OnUpdate(dt);
+            
             var t = Mathf.PingPong((Time.time + _timeOffset) * speed, 1);
             Position = Vector2.Lerp(source, destination, t);
         }

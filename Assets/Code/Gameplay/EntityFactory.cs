@@ -7,6 +7,7 @@ namespace DoodleJump.Gameplay
 {
     public interface IEntityFactory
     {
+        IWorld World { get; set; }
         T CreateEntity<T>(string name) where T : Entity;
         void AddPrefab(string name, Entity prefab);
     }
@@ -46,6 +47,8 @@ namespace DoodleJump.Gameplay
             _entityPrefabs = new Dictionary<string, Entity>();
         }
 
+        public IWorld World { get; set; }
+
         public void AddPrefab(string name, Entity prefab)
         {
             _entityPrefabs[name] = prefab;
@@ -57,7 +60,10 @@ namespace DoodleJump.Gameplay
             {
                 if(prefab is T)
                 {
-                    return GameObject.Instantiate<T>(prefab as T);
+                    var entity = GameObject.Instantiate<T>(prefab as T);
+                    World.AddEntity(entity);
+
+                    return entity;
                 }else
                 {
                     _logger.LogError($"Prefab : {name} is not of type : {typeof(T)}");

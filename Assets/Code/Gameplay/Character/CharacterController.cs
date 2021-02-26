@@ -51,17 +51,12 @@ namespace DoodleJump.Gameplay
         }
 
 
-        void Update()
-        {
-            //@TODO : this is a hack. world should has its own simulation state
-            if(_world == null)
-            {
-                return;
-            }
-            
-            _inputController.Update(Time.deltaTime);
+        public override void OnUpdate(float dt)
+        {   
+            base.OnUpdate(dt);
 
-            _movementController.Update(Time.deltaTime);
+            UpdateMovementController(dt);
+            _inputController.Update(Time.deltaTime);
 
             //update camera position
             var cameraPos = mainCamera.transform.position;
@@ -73,6 +68,11 @@ namespace DoodleJump.Gameplay
             {
                 _world.OnLose();
             }
+        }
+
+        public void UpdateMovementController(float dt)
+        {
+            _movementController.Update(dt);
         }
 
         public void MoveXWithSpeed(float factor)

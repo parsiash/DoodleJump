@@ -5,28 +5,41 @@ using UnityEngine;
 
 namespace DoodleJump.Gameplay
 {
+    public enum WorldState
+    {
+        Initial,
+        Simulating,
+        Final
+    }
+
     public interface IWorld
     {
+        WorldState State { get; }
         float LeftEdgeX { get; }
         float RightEdgeX { get; }
+        int Score { get; }
+        int JumpedPlatformCount { get; }
         CharacterController Character { get; }
 
         void OnStart();
-        void OnUpdate();
+        void OnUpdate(float dt);
         void Reset();
+        void OnPlatformJumpFirstTime(Platform platform);
+        void OnLose();
 
+        //entities
+        IEnumerable<IEntity> Entities { get; }
+        void AddEntity(IEntity entity);
+        void RemoveEntity(IEntity entity);
+
+        //systems
         IEntityFactory EntityFactory { get; }
+        IChunkSystem ChunkSystem { get; }
         DoodleJump.Common.ILogger Logger { get; }
 
-        IChunkSystem ChunkSystem { get; }
-
-        void OnLose();
-        int Score { get; }
-        int JumpedPlatformCount { get; }
 
         //events
         void AddEventListener(IWorldEventListener eventListener);
-        void OnPlatformJumpFirstTime(Platform platform);
     }
 
     public interface IWorldEventListener
@@ -35,6 +48,8 @@ namespace DoodleJump.Gameplay
 
     public class World : IWorld
     {
+        public WorldState State { get; private set; }
+
         public float LeftEdgeX => -4f;
         public float RightEdgeX => 4f;
 
@@ -48,6 +63,10 @@ namespace DoodleJump.Gameplay
 
         private IChunkSystem _chunkSystem;
         public IChunkSystem ChunkSystem => _chunkSystem;
+
+        private List<IEntity> _entities;
+        private List<IEntity> _createdEntities;
+        public IEnumerable<IEntity> Entities => _entities;
 
         private List<IWorldEventListener> _eventListeners;
 
@@ -72,10 +91,19 @@ namespace DoodleJump.Gameplay
 
         private Action<int> OnLoseCallback;
 
-        public World(CharacterController character, IEntityFactory entityFactory, Action<int> onLoseCallback)
+        public World(IEntityFactory entityFactory, Action<int> onLoseCallback)
         {
-            _character = character;
+            State = WorldState.Initial;
+
             _entityFactory = entityFactory;
+            _entityFactory.World = this;
+            
+            //init entities
+            _entities = new List<IEntity>();
+            _createdEntities = new List<IEntity>();
+
+            //create the character
+            _character = entityFactory.CreateEntity<CharacterController>();
 
             _chunkSystem = new ChunkSystem(this);
             _eventListeners = new List<IWorldEventListener>();
@@ -83,14 +111,44 @@ namespace DoodleJump.Gameplay
             OnLoseCallback = onLoseCallback;
         }
 
-        public void OnUpdate()
+        public void OnUpdate(float dt)
         {
+            if(State != WorldState.Simulating)
+            {
+                return;
+            }
+            
             _chunkSystem.OnUpdate();
+
+            foreach(var entity in _entities)
+            {
+                if(entity != null && !entity.IsDestroyed)
+                {
+                    entity.OnUpdate(Time.deltaTime);
+                }
+            }
+
+            //add created entities
+            foreach(var entity in _createdEntities)
+            {
+                _entities.Add(entity);
+            }
+            _createdEntities.Clear();
+
+            //destroy entities
+            foreach(var entity in _entities)
+            {
+                if(entity.IsDestroyed)
+                {
+                    DestroyEntityGameObject(entity);
+                }
+            }
+            _entities.RemoveAll(e => e.IsDestroyed);
         }
 
         public void OnStart()
         {
-            _character.Init(this);
+            State = WorldState.Simulating;
         }
 
         public void Reset()
@@ -98,10 +156,36 @@ namespace DoodleJump.Gameplay
             _character.Reset();
             _chunkSystem.Clear();
             _eventListeners.Clear();
+            ClearAllEntities();
+        }
+
+        private void ClearAllEntities()
+        {
+            foreach (var entity in _entities)
+            {
+                DestroyEntityGameObject(entity);
+            }
+            _entities.Clear();
+
+            foreach (var entity in _createdEntities)
+            {
+                DestroyEntityGameObject(entity);
+            }
+            _createdEntities.Clear();
+        }
+
+        private void DestroyEntityGameObject(IEntity ientity)
+        {
+            var entity = ientity as Entity;
+            if(entity)
+            {
+                GameObject.Destroy(entity.gameObject);
+            }
         }
 
         public void OnLose()
         {
+            State = WorldState.Final;
             OnLoseCallback(Score);
         }
 
@@ -126,5 +210,15 @@ namespace DoodleJump.Gameplay
             }
         }
 
+        public void AddEntity(IEntity entity)
+        {
+            _createdEntities.Add(entity);
+            entity.Init(this);
+        }
+
+        public void RemoveEntity(IEntity entity)
+        {
+            _entities.Remove(entity);
+        }
     }
 }

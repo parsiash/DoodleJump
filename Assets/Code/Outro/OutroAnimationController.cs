@@ -41,6 +41,8 @@ namespace DoodleJump.Gameplay
 
             while(timer <= outroAnimationTime)
             {
+                character.UpdateMovementController(Time.deltaTime);
+                
                 var characterPosition = character.Position;
                 var cameraPosition = universalCamera.Position;
 

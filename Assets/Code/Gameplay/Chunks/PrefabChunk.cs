@@ -22,7 +22,7 @@ namespace DoodleJump.Gameplay
                 if(_entities == null)
                 {
                     _entities = new List<Entity>();
-                    _entities.AddRange(GetComponentsInChildren<Entity>());
+                    _entities.AddRange(GetComponentsInChildren<Entity>(true));
                     _entities.RemoveAll(e => e == this);
                 }
 
@@ -39,7 +39,8 @@ namespace DoodleJump.Gameplay
             {
                 if(entity)
                 {
-                    entity.Init(world);
+                    world.AddEntity(entity);
+                    entity.SetActive(true);
                 }
             }
         }
@@ -65,7 +66,8 @@ namespace DoodleJump.Gameplay
                     {
                         if(entity.box.TopY < cameraBox.BottomY)
                         {
-                            entity.Destroy();
+                            entity.SetActive(false);
+                            World.RemoveEntity(entity);
                         }
                     }
                 }
@@ -78,6 +80,11 @@ namespace DoodleJump.Gameplay
 
         public void Dispose()
         {
+            foreach(var entity in entities)
+            {
+                World.RemoveEntity(entity);
+            }
+
             _isDisposed = true;
             Destroy();
         }

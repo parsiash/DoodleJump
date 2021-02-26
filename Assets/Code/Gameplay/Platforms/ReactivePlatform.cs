@@ -34,8 +34,10 @@ namespace DoodleJump.Gameplay
             _targetX = GetRandomXPosition();
         }
 
-        void Update()
+        public override void OnUpdate(float dt)
         {
+            base.OnUpdate(dt);
+            
             this.SetX(Mathf.MoveTowards(Position.x, _targetX, moveSpeed * Time.deltaTime));
         }
     }

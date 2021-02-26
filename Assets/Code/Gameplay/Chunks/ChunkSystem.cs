@@ -122,7 +122,7 @@ namespace DoodleJump.Gameplay
             var minInterval = GetMinVerticalInterval(bottomY);
             var maxInterval = GetMaxVerticalInterval(bottomY);
 
-            var chunk = new Chunks.SimpleChunk(Vector2.up * bottomY);
+            var chunk = new Chunks.SimpleChunk(_world, Vector2.up * bottomY);
 
             for(int i = 0; i < 10; i++)
             {

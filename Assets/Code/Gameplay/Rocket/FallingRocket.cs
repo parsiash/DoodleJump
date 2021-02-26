@@ -11,8 +11,10 @@ namespace DoodleJump.Gameplay
             parallax.Init();
         }
 
-        void Update()
+        public override void OnUpdate(float dt)
         {
+            base.OnUpdate(dt);
+
             if(box.TopY < UniversalCamera.Instance.CameraBox.BottomY)
             {
                 Destroy();
