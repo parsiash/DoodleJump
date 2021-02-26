@@ -47,6 +47,10 @@ MonoBehaviour:
     type: 3}
   movingPlatformPrefab: {fileID: 5150755666725220761, guid: dc354482a8980174a8ec221fb1e29b0e,
     type: 3}
+  oneTimePlatformPrefab: {fileID: 8033410941431713574, guid: abd4952c8dd070c488aefdd9fbbf9489,
+    type: 3}
+  destroyablePlatformPrefab: {fileID: 205747500519970111, guid: 7be62df39f0676e4c9fdac2b24aa25dd,
+    type: 3}
   rocketPrefab: {fileID: 4412819330729962184, guid: 4313279400552674e92c913e2e3f22bc,
     type: 3}
   springPrefab: {fileID: 5244009214431216069, guid: 7bde9e4822696eb4a92e4a3bb7cb18b7,

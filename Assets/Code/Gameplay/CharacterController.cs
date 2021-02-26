@@ -151,7 +151,11 @@ namespace DoodleJump.Gameplay
                 case "Platform":
                     if (Veolicty.y < 0)
                     {
-                        Jump();
+                        var platform = otherCollider?.GetComponentInParent<IPlatform>();
+                        if(platform != null && platform.OnCharacterJump(this))
+                        {
+                            Jump();
+                        }
                     }
                     break;
 

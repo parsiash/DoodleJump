@@ -1,31 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &5150755666725220761
+--- !u!114 &8033410941431713574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6781310485237169569}
+  m_GameObject: {fileID: 4853804661941252461}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1292ebc6b46b6714b9e2c37c34ab2a36, type: 3}
+  m_Script: {fileID: 11500000, guid: b7332abfb884ebc408c453f3dc8b6ab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boxSize: {x: 1, y: 0.24}
   boxOffset: {x: 0, y: 0}
-  speed: 0.7
---- !u!1001 &9110404764075598825
+--- !u!1001 &7146799981177171749
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 16086531773953188, guid: 393d6f4cec3db3647aace9b14736703b,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: e44cd6315aa0240488f66088a9ef5d52,
+        type: 2}
     - target: {fileID: 2338112748630695496, guid: 393d6f4cec3db3647aace9b14736703b,
         type: 3}
       propertyPath: m_Name
-      value: MovingPlatform
+      value: OneTimePlatform
       objectReference: {fileID: 0}
     - target: {fileID: 2418275785277099904, guid: 393d6f4cec3db3647aace9b14736703b,
         type: 3}
@@ -84,25 +89,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8631387786797401971, guid: 393d6f4cec3db3647aace9b14736703b,
         type: 3}
-      propertyPath: m_Color.r
-      value: 0.990566
-      objectReference: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 6612653976421257175, guid: 7088875303a937946b348b9660a8576f,
+        type: 3}
     - target: {fileID: 8631387786797401971, guid: 393d6f4cec3db3647aace9b14736703b,
         type: 3}
-      propertyPath: m_Color.g
-      value: 0.77432734
-      objectReference: {fileID: 0}
-    - target: {fileID: 8631387786797401971, guid: 393d6f4cec3db3647aace9b14736703b,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 0
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8532493330893767331, guid: 393d6f4cec3db3647aace9b14736703b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 393d6f4cec3db3647aace9b14736703b, type: 3}
---- !u!1 &6781310485237169569 stripped
+--- !u!1 &4853804661941252461 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2338112748630695496, guid: 393d6f4cec3db3647aace9b14736703b,
     type: 3}
-  m_PrefabInstance: {fileID: 9110404764075598825}
+  m_PrefabInstance: {fileID: 7146799981177171749}
   m_PrefabAsset: {fileID: 0}

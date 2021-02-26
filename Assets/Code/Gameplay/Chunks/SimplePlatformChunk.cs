@@ -56,14 +56,19 @@ namespace DoodleJump.Gameplay.Chunks
                 _length += interval;
 
                 Platform platform = null;
-                if(Random.value > 0.7f)
+                if(Random.value > 0.9f)
                 {
                     platform = entityFactory.CreateEntity<MovingPlatform>();
                 }else
                 {
-                    platform = entityFactory.CreateEntity<Platform>();
+                    if(_configuration.startPosition.y > 150f && Random.value > 0.8f)
+                    {
+                        platform = entityFactory.CreateEntity<OneTimePlatform>();
+                    }else
+                    {
+                        platform = entityFactory.CreateEntity<Platform>();
+                    }
                 }
-
 
                 platform.Position = startPosition + Vector2.up * _length + Vector2.right * Random.Range(_configuration.world.LeftEdgeX + platform.Size.x, _configuration.world.RightEdgeX - platform.Size.x);
                 
@@ -91,6 +96,21 @@ namespace DoodleJump.Gameplay.Chunks
 
                 platform.Init(_configuration.world);
                 _entities.Add(platform);
+
+                if(platform is Platform)
+                {
+                    if(Random.value < 0.2f)
+                    {
+                        var platformBox = platform.box;
+                        if(platformBox.RightX < _configuration.world.RightEdgeX - platformBox.Size.x * 1.5f)
+                        {
+                            var destroyablePlatform = entityFactory.CreateEntity<DestroyablePlatform>();
+                            destroyablePlatform.Position = new Vector2(Random.Range(platformBox.RightX + platformBox.Size.x * 0.75f, _configuration.world.RightEdgeX - platformBox.Size.x * 0.75f), platform.Position.y);
+                            destroyablePlatform.Init(_configuration.world);
+                            _entities.Add(destroyablePlatform);                            
+                        }
+                    }
+                }
             }
         }
 

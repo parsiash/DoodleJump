@@ -18,6 +18,8 @@ namespace DoodleJump.Gameplay
         
         [SerializeField] private Platform platformPrefab;
         [SerializeField] private MovingPlatform movingPlatformPrefab;
+        [SerializeField] private OneTimePlatform oneTimePlatformPrefab;
+        [SerializeField] private DestroyablePlatform destroyablePlatformPrefab;
         [SerializeField] private Rocket rocketPrefab;
         [SerializeField] private Spring springPrefab;
         [SerializeField] private Planet planetPrefab;
@@ -33,13 +35,17 @@ namespace DoodleJump.Gameplay
                 if(_entityFactory == null)
                 {
                     _entityFactory = _entityFactory ?? new EntityFactory(Common.Logger.Instance);
-                    
+                
                     _entityFactory.AddPrefab<Platform>(platformPrefab);
                     _entityFactory.AddPrefab<MovingPlatform>(movingPlatformPrefab);
-                    _entityFactory.AddPrefab<Rocket>(rocketPrefab);
+                    _entityFactory.AddPrefab<OneTimePlatform>(oneTimePlatformPrefab);
+                    _entityFactory.AddPrefab<DestroyablePlatform>(destroyablePlatformPrefab);
+
                     _entityFactory.AddPrefab<Spring>(springPrefab);
-                    _entityFactory.AddPrefab<Planet>(planetPrefab);
+                    _entityFactory.AddPrefab<Rocket>(rocketPrefab);
                     _entityFactory.AddPrefab<FallingRocket>(fallingRocketPrefab);
+
+                    _entityFactory.AddPrefab<Planet>(planetPrefab);
                 }
 
                 return _entityFactory;

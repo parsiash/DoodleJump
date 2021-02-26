@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 02cf85de6c79ddf41966e6d1936560f0
+guid: fd545dcb83983b34285b8b6833fa51f8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3275810401724867860
-    second: Platform_0
+      213: 2461386691914645861
+    second: DestroyablePlatform_0
+  - first:
+      213: -6043906878230813175
+    second: DestroyablePlatform_0
+  - first:
+      213: 3912848840854500467
+    second: DestroyablePlatform_1
+  - first:
+      213: 6469316532324557629
+    second: DestroyablePlatform_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -46,7 +55,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 512
@@ -104,22 +113,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Platform_0
+      name: DestroyablePlatform_0
       rect:
         serializedVersion: 2
-        x: 259
-        y: 446
-        width: 503
-        height: 115
+        x: 120
+        y: 445
+        width: 179
+        height: 114
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 41527525434067d20800000000000000
-      internalID: 3275810401724867860
+      spriteID: 906238b57babf1ca0800000000000000
+      internalID: -6043906878230813175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DestroyablePlatform_1
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 446
+        width: 248
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3747ee22a4b3d4630800000000000000
+      internalID: 3912848840854500467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DestroyablePlatform_2
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 447
+        width: 160
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3364c83c11a7c950800000000000000
+      internalID: 6469316532324557629
       vertices: []
       indices: 
       edges: []
