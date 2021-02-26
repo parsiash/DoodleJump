@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tryAgainButton: {fileID: 7882015583376417613}
+  exitButton: {fileID: 7332160180874940561}
   scoreUI: {fileID: 8105121297530713659}
   highScoreUI: {fileID: 8288446477887231307}
 --- !u!1 &8245035316195954642
@@ -432,12 +433,12 @@ PrefabInstance:
     - target: {fileID: 8534954933690610796, guid: 26ea3348bb49039419682f8f967b0289,
         type: 3}
       propertyPath: m_Name
-      value: MenuButton
+      value: ExitButton
       objectReference: {fileID: 0}
     - target: {fileID: 8654384049816116100, guid: 26ea3348bb49039419682f8f967b0289,
         type: 3}
       propertyPath: m_text
-      value: MENU
+      value: EXIT
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26ea3348bb49039419682f8f967b0289, type: 3}
@@ -447,6 +448,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 7041806581244295862}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7332160180874940561 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 322171271544728103, guid: 26ea3348bb49039419682f8f967b0289,
+    type: 3}
+  m_PrefabInstance: {fileID: 7041806581244295862}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7573399228760508778
 PrefabInstance:
   m_ObjectHideFlags: 0

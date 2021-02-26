@@ -1,4 +1,5 @@
 using System;
+using DoodleJump.Common;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ namespace DoodleJump.UI
     public class LoseMenu : UIComponent
     {
         [SerializeField] private Button tryAgainButton;
+        [SerializeField] private Button exitButton;
         [SerializeField] private KeyValueUI scoreUI;
         [SerializeField] private KeyValueUI highScoreUI;
         private Action OnTryAgainCallback;
@@ -18,6 +20,7 @@ namespace DoodleJump.UI
             highScoreUI.SetValue(highScore);
 
             SetButtonCallback(tryAgainButton, onTryAgainCallback);
+            SetButtonCallback(exitButton, OnExitButtonClick);
         }
 
         private void SetButtonCallback(Button button, Action callback)
@@ -29,6 +32,12 @@ namespace DoodleJump.UI
         public void OnTryAgainButtonClick()
         {
             OnTryAgainCallback();
+        }
+
+        public void OnExitButtonClick()
+        {
+            Common.Logger.Instance.Log("Exit Application");
+            Application.Quit();
         }
     }
 }
