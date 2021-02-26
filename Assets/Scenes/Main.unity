@@ -218,9 +218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dcccc3459a41b43ba4d7d82c3b6eb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDown: 0
-  isContinued: 0
-  isUp: 0
 --- !u!4 &796018974
 Transform:
   m_ObjectHideFlags: 0

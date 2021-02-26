@@ -43,25 +43,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c915e7a56ed618942a0a0e62546aed2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterPrefab: {fileID: 6488294049089770321, guid: 6cb93f9952b21fa4aa92384b94cb0efa,
-    type: 3}
-  platformPrefab: {fileID: 8532493330893767331, guid: 393d6f4cec3db3647aace9b14736703b,
-    type: 3}
-  movingPlatformPrefab: {fileID: 5150755666725220761, guid: dc354482a8980174a8ec221fb1e29b0e,
-    type: 3}
-  oneTimePlatformPrefab: {fileID: 8033410941431713574, guid: abd4952c8dd070c488aefdd9fbbf9489,
-    type: 3}
-  destroyablePlatformPrefab: {fileID: 205747500519970111, guid: 7be62df39f0676e4c9fdac2b24aa25dd,
-    type: 3}
-  rocketPrefab: {fileID: 4412819330729962184, guid: 4313279400552674e92c913e2e3f22bc,
-    type: 3}
-  springPrefab: {fileID: 5244009214431216069, guid: 7bde9e4822696eb4a92e4a3bb7cb18b7,
-    type: 3}
-  planetPrefab: {fileID: 6710250352802296871, guid: dff010a6a59fddb488241df67a15e26d,
-    type: 3}
-  fallingRocketPrefab: {fileID: -2719255636323730856, guid: 3478104a2a561bd4ca3e530dbe271a0b,
-    type: 3}
-  prefabChunks:
-  - {fileID: 6105055065360290371, guid: c2e43d3eaa6472342bf44bc46f6384e5, type: 3}
-  - {fileID: 1692896785607576304, guid: 5c511061c42f3c64b9abb280fc2c105c, type: 3}
-  - {fileID: 1216202258380103307, guid: 5183c6f4d9f58fb4c9ab14fdc3b5ff7f, type: 3}
+  prefabs:
+    characterPrefab: {fileID: 6488294049089770321, guid: 6cb93f9952b21fa4aa92384b94cb0efa,
+      type: 3}
+    platformPrefab: {fileID: 8532493330893767331, guid: 393d6f4cec3db3647aace9b14736703b,
+      type: 3}
+    movingPlatformPrefab: {fileID: 5150755666725220761, guid: dc354482a8980174a8ec221fb1e29b0e,
+      type: 3}
+    oneTimePlatformPrefab: {fileID: 8033410941431713574, guid: abd4952c8dd070c488aefdd9fbbf9489,
+      type: 3}
+    destroyablePlatformPrefab: {fileID: 205747500519970111, guid: 7be62df39f0676e4c9fdac2b24aa25dd,
+      type: 3}
+    rocketPrefab: {fileID: 4412819330729962184, guid: 4313279400552674e92c913e2e3f22bc,
+      type: 3}
+    springPrefab: {fileID: 5244009214431216069, guid: 7bde9e4822696eb4a92e4a3bb7cb18b7,
+      type: 3}
+    planetPrefab: {fileID: 6710250352802296871, guid: dff010a6a59fddb488241df67a15e26d,
+      type: 3}
+    fallingRocketPrefab: {fileID: -2719255636323730856, guid: 3478104a2a561bd4ca3e530dbe271a0b,
+      type: 3}
+    prefabChunks:
+    - {fileID: 1692896785607576304, guid: 5c511061c42f3c64b9abb280fc2c105c, type: 3}
+    - {fileID: 6105055065360290371, guid: c2e43d3eaa6472342bf44bc46f6384e5, type: 3}
+    - {fileID: 1216202258380103307, guid: 5183c6f4d9f58fb4c9ab14fdc3b5ff7f, type: 3}
+  chunkSystemConfiguration:
+    oneTimePlatformMinY: 150
+    oneTimePlatformChance: 0.8
+    springChance: 0.4
+    rocketChance: 0.2
+    movingPlatformChance: 0.9
+    destroyablePlatformChance: 0.2
+    destroyablePlatformMarginFactor: 0.75
+    verticalMovingChunkChance: 0.5
+    verticalMovingChunkInterval: 120
+    rocketSpawnInterval: 100
+    springSpawnInterval: 20
+    reactiveChunkChance: 0.3
+    reactiveChunkInterval: 90

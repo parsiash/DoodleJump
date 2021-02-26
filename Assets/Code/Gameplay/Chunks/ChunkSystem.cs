@@ -11,33 +11,26 @@ namespace DoodleJump.Gameplay
         void Clear();
     }
 
+    /// <summary>
+    /// The system responsible for generating and destroying chunks at runtime.
+    /// </summary>
     public class ChunkSystem : IChunkSystem
     {
         private IWorld _world;
+        private ChunkSystemConfiguration _configuration;
         private List<IChunk> _chunks;
-        private UniversalCamera universalCamera => UniversalCamera.Instance;
+        
         private float _lastVerticalMovingChunkY;
         private float _lastReactiveChunkY;
-
+        
+        private UniversalCamera universalCamera => UniversalCamera.Instance;
         private IEntityFactory entityFactory => _world.EntityFactory;
 
-        private const float oneTimePlatformMinY = 150f;
-        private const float oneTimePlatformChance = 0.8f;
-        private const float springChance = 0.4f;
-        private const float rocketChance = 0.2f;
-        private const float movingPlatformChance = 0.9f;
-        private const float destroyablePlatformChance = 0.2f;
-        private const float destroyablePlatformMarginFactor = 0.75f;
-        private const float verticalMovingChunkChance = 0.5f;
-        private const int verticalMovingChunkInterval = 120;
-        private const float rocketSpawnInterval = 100f;
-        private const float springSpawnInterval = 20f;
-        private const float reactiveChunkChance = 0.3f;
-        private const int reactiveChunkInterval = 90;
 
-        public ChunkSystem(IWorld world)
+        public ChunkSystem(IWorld world, ChunkSystemConfiguration configuration)
         {
             _world = world;
+            _configuration = configuration;
             _chunks = new List<IChunk>();
 
             CreatePrefabChunk("InitialChunk", -5f);
@@ -74,9 +67,9 @@ namespace DoodleJump.Gameplay
             if(cameraBox.TopY > topY - 1)
             {
                 IChunk chunk = null;
-                if(topY - _lastVerticalMovingChunkY > verticalMovingChunkInterval)
+                if(topY - _lastVerticalMovingChunkY > _configuration.verticalMovingChunkInterval)
                 {
-                    if(Random.value < verticalMovingChunkChance)
+                    if(Random.value < _configuration.verticalMovingChunkChance)
                     {
                         var prefabChunk = CreatePrefabChunk("MovingPlatformChunk", topY);
                         chunk = prefabChunk;
@@ -87,9 +80,9 @@ namespace DoodleJump.Gameplay
 
                 if(chunk == null)
                 {
-                    if(topY - _lastReactiveChunkY > reactiveChunkInterval)
+                    if(topY - _lastReactiveChunkY > _configuration.reactiveChunkInterval)
                     {
-                        if(Random.value < reactiveChunkChance)
+                        if(Random.value < _configuration.reactiveChunkChance)
                         {
                             var prefabChunk = CreatePrefabChunk("ReactiveChunk", topY);
                             chunk = prefabChunk;
@@ -142,13 +135,13 @@ namespace DoodleJump.Gameplay
 
                 if (platform.GetType() == typeof(Platform))
                 {
-                    if (Random.value < destroyablePlatformChance)
+                    if (Random.value < _configuration.destroyablePlatformChance)
                     {
                         var platformBox = platform.box;
                         if (platformBox.RightX < _world.RightEdgeX - platformBox.Size.x * 1.5f)
                         {
                             var destroyablePlatform = entityFactory.CreateEntity<DestroyablePlatform>();
-                            destroyablePlatform.Position = new Vector2(Random.Range(platformBox.RightX + platformBox.Size.x * destroyablePlatformMarginFactor, _world.RightEdgeX - platformBox.Size.x * 0.75f), platform.Position.y);
+                            destroyablePlatform.Position = new Vector2(Random.Range(platformBox.RightX + platformBox.Size.x * _configuration.destroyablePlatformMarginFactor, _world.RightEdgeX - platformBox.Size.x * 0.75f), platform.Position.y);
                             destroyablePlatform.Init(_world);
                             chunk.AddEntity(destroyablePlatform);
                         }
@@ -166,12 +159,12 @@ namespace DoodleJump.Gameplay
         private Entity CreateRandomCollectible(float y)
         {
             Entity collectible = null;
-            if (Random.value < springChance && y - _lastSpringY > springSpawnInterval)
+            if (Random.value < _configuration.springChance && y - _lastSpringY > _configuration.springSpawnInterval)
             {
                 collectible = entityFactory.CreateEntity<Spring>();
                 _lastSpringY = y;
             }
-            else if (Random.value < rocketChance && y - _lastRocketY > rocketSpawnInterval)
+            else if (Random.value < _configuration.rocketChance && y - _lastRocketY > _configuration.rocketSpawnInterval)
             {
                 collectible = entityFactory.CreateEntity<Rocket>();
                 _lastRocketY = y;
@@ -183,13 +176,13 @@ namespace DoodleJump.Gameplay
         private Platform CreateRandomPlatform(float bottomY, Entity collectible, float platformBottomEdgeY)
         {
             Platform platform;
-            if (Random.value > movingPlatformChance)
+            if (Random.value > _configuration.movingPlatformChance)
             {
                 platform = CreatePlatform<MovingPlatform>(platformBottomEdgeY, collectible);
             }
             else
             {
-                if (bottomY > oneTimePlatformMinY && Random.value > oneTimePlatformChance)
+                if (bottomY > _configuration.oneTimePlatformMinY && Random.value > _configuration.oneTimePlatformChance)
                 {
                     platform = CreatePlatform<OneTimePlatform>(platformBottomEdgeY, collectible);
                 }

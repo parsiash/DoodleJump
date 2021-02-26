@@ -17,50 +17,11 @@ namespace DoodleJump.Gameplay
         private OutroAnimationController _outroAnimationController;
         private OutroMenu _outroMenu;
 
-        [SerializeField] private CharacterController characterPrefab;
-        [SerializeField] private Platform platformPrefab;
-        [SerializeField] private MovingPlatform movingPlatformPrefab;
-        [SerializeField] private OneTimePlatform oneTimePlatformPrefab;
-        [SerializeField] private DestroyablePlatform destroyablePlatformPrefab;
-        [SerializeField] private Rocket rocketPrefab;
-        [SerializeField] private Spring springPrefab;
-        [SerializeField] private Planet planetPrefab;
-        [SerializeField] private FallingRocket fallingRocketPrefab;
-        [SerializeField] private PrefabChunk[] prefabChunks;
+        [SerializeField] private GameplayPrefabs prefabs;
+        [SerializeField] private ChunkSystemConfiguration chunkSystemConfiguration;
 
         private IEntityFactory _entityFactory;
-        private IEntityFactory entityFactory
-        {
-            get
-            {
-                if(_entityFactory == null)
-                {
-                    _entityFactory = _entityFactory ?? new EntityFactory(Common.Logger.Instance);
-                    
-                    _entityFactory.AddPrefab<CharacterController>(characterPrefab);
-                    _entityFactory.AddPrefab<Platform>(platformPrefab);
-                    _entityFactory.AddPrefab<MovingPlatform>(movingPlatformPrefab);
-                    _entityFactory.AddPrefab<OneTimePlatform>(oneTimePlatformPrefab);
-                    _entityFactory.AddPrefab<DestroyablePlatform>(destroyablePlatformPrefab);
-
-                    _entityFactory.AddPrefab<Spring>(springPrefab);
-                    _entityFactory.AddPrefab<Rocket>(rocketPrefab);
-                    _entityFactory.AddPrefab<FallingRocket>(fallingRocketPrefab);
-
-                    _entityFactory.AddPrefab<Planet>(planetPrefab);
-
-                    foreach(var prefabChunk in prefabChunks)
-                    {
-                        if(prefabChunk)
-                        {
-                            _entityFactory.AddPrefab(prefabChunk.ChunkName, prefabChunk);
-                        }
-                    }
-                }
-
-                return _entityFactory;
-            }
-        }
+        private UniversalCamera universalCamera => UniversalCamera.Instance;
 
         public void Initialize(HUD hud, PlanetGenerator planetGenerator, IntroAnimationController introAnimationController, OutroAnimationController outroAnimationController, OutroMenu outroMenu)
         {
@@ -70,11 +31,34 @@ namespace DoodleJump.Gameplay
             _outroMenu = outroMenu;
             _hud = hud;
 
+            InitializeEntityFactory();
             ResetGame();
         }
 
+         private void InitializeEntityFactory()
+        {
+            _entityFactory = new EntityFactory(Common.Logger.Instance);
+            
+            _entityFactory.AddPrefab<CharacterController>(prefabs.characterPrefab);
+            _entityFactory.AddPrefab<Platform>(prefabs.platformPrefab);
+            _entityFactory.AddPrefab<MovingPlatform>(prefabs.movingPlatformPrefab);
+            _entityFactory.AddPrefab<OneTimePlatform>(prefabs.oneTimePlatformPrefab);
+            _entityFactory.AddPrefab<DestroyablePlatform>(prefabs.destroyablePlatformPrefab);
 
-        private UniversalCamera universalCamera => UniversalCamera.Instance;
+            _entityFactory.AddPrefab<Spring>(prefabs.springPrefab);
+            _entityFactory.AddPrefab<Rocket>(prefabs.rocketPrefab);
+            _entityFactory.AddPrefab<FallingRocket>(prefabs.fallingRocketPrefab);
+
+            _entityFactory.AddPrefab<Planet>(prefabs.planetPrefab);
+
+            foreach(var prefabChunk in prefabs.prefabChunks)
+            {
+                if(prefabChunk)
+                {
+                    _entityFactory.AddPrefab(prefabChunk.ChunkName, prefabChunk);
+                }
+            }
+        }
 
         void Update()
         {
@@ -102,7 +86,7 @@ namespace DoodleJump.Gameplay
 
         private void StartGame()
         {
-            _world = new World(entityFactory, OnLose);
+            _world = new World(_entityFactory, chunkSystemConfiguration, OnLose);
             _world.OnStart();
 
             _hud.Initialize(_world);

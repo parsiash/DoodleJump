@@ -88,7 +88,7 @@ namespace DoodleJump.Gameplay
 
         private Action<int> OnLoseCallback;
 
-        public World(IEntityFactory entityFactory, Action<int> onLoseCallback)
+        public World(IEntityFactory entityFactory, ChunkSystemConfiguration chunkSystemConfiguration, Action<int> onLoseCallback)
         {
             State = WorldState.Initial;
 
@@ -102,7 +102,7 @@ namespace DoodleJump.Gameplay
             //create the character
             _character = entityFactory.CreateEntity<CharacterController>();
 
-            _chunkSystem = new ChunkSystem(this);
+            _chunkSystem = new ChunkSystem(this, chunkSystemConfiguration);
 
             OnLoseCallback = onLoseCallback;
         }
