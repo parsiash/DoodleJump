@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace DoodleJump.Gameplay
 {
+    /// <summary>
+    /// A behaviour that can be attached to a gameobject and used for common animation event functionalities.
+    /// </summary>
     public class AnimationEventHelper : CommonBehaviour
     {
         [SerializeField] private TextMeshProUGUI[] texts;

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace DoodleJump.Gameplay
 {
     /// <summary>
-    /// The main script on the main jumping character.
+    /// The main script on the jumping character.
     /// </summary>
     public class CharacterController : Entity
     {
@@ -147,7 +147,7 @@ namespace DoodleJump.Gameplay
         {
             switch(LayerMask.LayerToName(otherCollider.gameObject.layer))
             {
-                case "Platform":
+                case Layers.Platform:
                     if (Veolicty.y < 0)
                     {
                         var platform = otherCollider?.GetComponentInParent<IPlatform>();
@@ -158,8 +158,8 @@ namespace DoodleJump.Gameplay
                     }
                     break;
 
-                case "Spring":
-                case "Collectible":
+                case Layers.Spring:
+                case Layers.Collectible:
                     var collectible = otherCollider.GetComponentInParent<ICollectible>();
                     if(collectible == null)
                     {

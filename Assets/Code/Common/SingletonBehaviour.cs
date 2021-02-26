@@ -10,6 +10,10 @@ namespace DoodleJump.Common
 
     }
 
+    /// <summary>
+    /// A templated singleton pattern for unity behaviours.
+    /// For converting a behaviour type like T to singleton, just inherit from SingletonBehaviour<T>
+    /// </summary>
     public class SingletonBehaviour<T> : SingletonBehaviour where T : SingletonBehaviour
     {
         private static T instance;

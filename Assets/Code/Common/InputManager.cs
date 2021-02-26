@@ -41,10 +41,15 @@ namespace DoodleJump.Common
             }
         }
 
-        public bool isDown;
-        public bool isContinued;
-        public bool isUp;
-        Touch touch;
+        private bool isDown;
+        private bool isContinued;
+        private bool isUp;
+
+        public bool IsDown => isDown;
+        public bool IsContinue => isContinued;
+        public bool IsUp => isUp;
+
+        private Touch touch;
 
 
         public Vector2 TouchPosition

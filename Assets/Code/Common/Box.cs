@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace DoodleJump.Common
 {
+    /// <summary>
+    /// A data type that represent an AABB. Used for various gameplay purposes.
+    /// </summary>
     public struct Box
     {
         public Vector2 _min;

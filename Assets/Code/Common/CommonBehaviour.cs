@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace DoodleJump.Common
 {
+    /// <summary>
+    /// Base class of all in-game mono behaviours.
+    /// Consists several reusable functionalities.
+    /// </summary>
     public class CommonBehaviour : MonoBehaviour
     {
         private Dictionary<string, Component> _cachedComoponents;

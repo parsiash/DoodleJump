@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace DoodleJump.Gameplay
 {
+    /// <summary>
+    /// Handls character swipe and key control.
+    /// </summary>
     public class CharacterInputController
     {
         private CharacterController _character;
@@ -18,10 +21,6 @@ namespace DoodleJump.Gameplay
         {
             _character = character;
             _moveSpeedX = moveSpeedX;
-        }
-
-        public void OnDrag(Vector2 worldPosition, Vector2 WorldDelta)
-        {
         }
 
         public void OnBeginDrag(Vector2 worldPosition)
@@ -41,10 +40,11 @@ namespace DoodleJump.Gameplay
         {
             var worldPosition = InputManager.Instance.TouchPosition;
 
-            if (inputManager.isDown && !inputManager.IsPointerOnUI)
+            //check drag state
+            if (inputManager.IsDown && !inputManager.IsPointerOnUI)
             {
                 OnBeginDrag(worldPosition);
-            }else if(InputManager.Instance.isUp)
+            }else if(InputManager.Instance.IsUp)
             {
                 OnEndDrag(worldPosition);
             }
