@@ -59,7 +59,7 @@ namespace DoodleJump.Gameplay
             }
 
             //handle key input
-            var horizontal = Input.GetAxis("Horizontal");
+            var horizontal = Input.GetAxis("Horizontal") * 0.5f;
             _character.MoveXWithSpeed(horizontal);
         }
     }
