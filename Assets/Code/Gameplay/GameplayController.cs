@@ -4,13 +4,18 @@ using UnityEngine;
 
 namespace DoodleJump.Gameplay
 {
+    /// <summary>
+    /// Responsible for managing the start and end of each game.
+    /// </summary>
     public class GameplayController : CommonBehaviour
     {
+        private IWorld _world;
+
         private PlanetGenerator _planetGenerator;
         private HUD _hud;
-        private IChunkSystem _chunkSystem;
         private IntroAnimationController _introAnimationController;
         private OutroAnimationController _outroAnimationController;
+        private OutroMenu _outroMenu;
 
         [SerializeField] private CharacterController characterPrefab;
         [SerializeField] private Platform platformPrefab;
@@ -22,8 +27,6 @@ namespace DoodleJump.Gameplay
         [SerializeField] private Planet planetPrefab;
         [SerializeField] private FallingRocket fallingRocketPrefab;
         [SerializeField] private PrefabChunk[] prefabChunks;
-
-        private IWorld _world;
 
         private IEntityFactory _entityFactory;
         private IEntityFactory entityFactory
@@ -59,9 +62,7 @@ namespace DoodleJump.Gameplay
             }
         }
 
-        private OutroMenu _outroMenu;
-
-        public void Initialize(IChunkSystem chunkSystem, HUD hud, PlanetGenerator planetGenerator, IntroAnimationController introAnimationController, OutroAnimationController outroAnimationController, OutroMenu outroMenu)
+        public void Initialize(HUD hud, PlanetGenerator planetGenerator, IntroAnimationController introAnimationController, OutroAnimationController outroAnimationController, OutroMenu outroMenu)
         {
             _planetGenerator = planetGenerator;
             _introAnimationController = introAnimationController;

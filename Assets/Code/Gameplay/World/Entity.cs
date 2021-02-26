@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace DoodleJump.Gameplay
 {
+    /// <summary>
+    /// The abstract type of all gameplay objects.
+    /// </summary>
     public interface IEntity
     {
         IWorld World { get; }
@@ -21,25 +24,9 @@ namespace DoodleJump.Gameplay
         void Reset();
     }
 
-    public static class EntityExtensions
-    {
-        public static void SetY(this IEntity entity, float y)
-        {
-            var position = entity.Position;
-            position.y = y;
-
-            entity.Position = position;
-        }
-
-        public static void SetX(this IEntity entity, float x)
-        {
-            var position = entity.Position;
-            position.x = x;
-
-            entity.Position = position;
-        }
-    }
-
+    /// <summary>
+    /// An entity base class entities with unity behaviour.
+    /// </summary>
     public class Entity : CommonBehaviour, IEntity
     {
         protected IWorld _world;

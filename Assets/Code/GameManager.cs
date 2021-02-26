@@ -35,7 +35,7 @@ namespace DoodleJump
                 return;
             }
             
-            gameController.Initialize(null, hud, planetGenerator, introAnimationController, outroAnimationController, outroMenu);
+            gameController.Initialize(hud, planetGenerator, introAnimationController, outroAnimationController, outroMenu);
         }
 
         void Update()

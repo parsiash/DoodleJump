@@ -5,6 +5,9 @@ using System;
 
 namespace DoodleJump.Gameplay
 {
+    /// <summary>
+    /// Responsible for instantiation and intialization of entities.
+    /// </summary>
     public interface IEntityFactory
     {
         IWorld World { get; set; }
