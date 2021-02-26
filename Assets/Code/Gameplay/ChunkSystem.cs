@@ -17,6 +17,7 @@ namespace DoodleJump.Gameplay
         private List<IChunk> _chunks;
         private UniversalCamera universalCamera => UniversalCamera.Instance;
         private float _lastVerticalMovingChunkY;
+        private float _lastReactiveChunkY;
 
         private IEntityFactory entityFactory => _world.EntityFactory;
 
@@ -28,9 +29,11 @@ namespace DoodleJump.Gameplay
         private const float destroyablePlatformChance = 0.2f;
         private const float destroyablePlatformMarginFactor = 0.75f;
         private const float verticalMovingChunkChance = 0.5f;
-        private const int verticalMovingChunkInterval = 150;
+        private const int verticalMovingChunkInterval = 120;
         private const float rocketSpawnInterval = 100f;
         private const float springSpawnInterval = 20f;
+        private const float reactiveChunkChance = 0.3f;
+        private const int reactiveChunkInterval = 90;
 
         public ChunkSystem(IWorld world)
         {
@@ -79,6 +82,20 @@ namespace DoodleJump.Gameplay
                         chunk = prefabChunk;
 
                         _lastVerticalMovingChunkY = topY;
+                    }
+                }
+
+                if(chunk == null)
+                {
+                    if(topY - _lastReactiveChunkY > reactiveChunkInterval)
+                    {
+                        if(Random.value < reactiveChunkChance)
+                        {
+                            var prefabChunk = CreatePrefabChunk("ReactiveChunk", topY);
+                            chunk = prefabChunk;
+
+                            _lastReactiveChunkY = topY;
+                        }
                     }
                 }
 

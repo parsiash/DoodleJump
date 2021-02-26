@@ -44,7 +44,7 @@ namespace DoodleJump.Gameplay
             }
         }
 
-        public void OnUpdate()
+        public virtual void OnUpdate()
         {
             if(!IsActive)
             {
